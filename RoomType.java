@@ -1,0 +1,93 @@
+public class RoomType {
+    private final int id;
+    private String typeName;
+    private int maxOccupancy;
+    private double basePricePerNight;
+    private Amenity[] amenities;
+    private int amenityCount;
+
+    public RoomType(int id, String typeName, int maxOccupancy, double basePricePerNight) throws Exception {
+        if (typeName == null || typeName.isBlank())
+            throw new Exception("Error: Room type name cannot be empty.");
+        if (maxOccupancy <= 0)
+            throw new Exception("Error: Max occupancy must be positive.");
+        if (basePricePerNight < 0)
+            throw new Exception("Error: Base price cannot be negative.");
+
+        this.id = id;
+        this.typeName = typeName;
+        this.maxOccupancy = maxOccupancy;
+        this.basePricePerNight = basePricePerNight;
+        this.amenities = new Amenity[10];
+        this.amenityCount = 0;
+    }
+
+    public void addAmenity(Amenity amenity) throws Exception {
+        if (amenity == null)
+            throw new Exception("Error: Cannot add a null amenity.");
+        if (amenityCount == amenities.length)
+            throw new Exception("Error: Amenity list is full.");
+        for (int i = 0; i < amenityCount; i++) {
+            if (amenities[i].getId() == amenity.getId())
+                throw new Exception("Error: Amenity already exists in this room type.");
+        }
+        amenities[amenityCount++] = amenity;
+    }
+
+    public void removeAmenity(int amenityId) throws Exception {
+        for (int i = 0; i < amenityCount; i++) {
+            if (amenities[i].getId() == amenityId) {
+                amenities[i] = amenities[--amenityCount];
+                amenities[amenityCount] = null;
+                return;
+            }
+        }
+        throw new Exception("Error: Amenity with id " + amenityId + " not found.");
+    }
+
+    public Amenity[] getAmenities() {
+        Amenity[] result = new Amenity[amenityCount];
+        for (int i = 0; i < amenityCount; i++)
+            result[i] = amenities[i];
+        return result;
+    }
+
+    public int getId() { return id; }
+    public String getTypeName() { return typeName; }
+    public int getMaxOccupancy() { return maxOccupancy; }
+    public double getBasePricePerNight() { return basePricePerNight; }
+
+    public void setTypeName(String typeName) throws Exception {
+        if (typeName == null || typeName.isBlank())
+            throw new Exception("Error: Room type name cannot be empty.");
+        this.typeName = typeName;
+    }
+
+    public void setMaxOccupancy(int maxOccupancy) throws Exception {
+        if (maxOccupancy <= 0)
+            throw new Exception("Error: Max occupancy must be positive.");
+        this.maxOccupancy = maxOccupancy;
+    }
+
+    public void setBasePricePerNight(double basePricePerNight) throws Exception {
+        if (basePricePerNight < 0)
+            throw new Exception("Error: Base price cannot be negative.");
+        this.basePricePerNight = basePricePerNight;
+    }
+
+    @Override
+    public String toString() {
+        String result = "RoomType: " + typeName + " (id=" + id + ")" +
+                "\n  Max Occupancy: " + maxOccupancy +
+                "\n  Price per Night: " + basePricePerNight +
+                "\n  Amenities: ";
+        if (amenityCount == 0) {
+            result += "None";
+        } else {
+            for (int i = 0; i < amenityCount; i++) {
+                result += "\n    - " + amenities[i].getName();
+            }
+        }
+        return result;
+    }
+}
