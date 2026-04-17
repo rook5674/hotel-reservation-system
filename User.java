@@ -5,7 +5,7 @@ abstract class User {
     private String password;
     private LocalDate dateOfBirth;
     public enum UserType { Staff, GUEST };
-     UserType type;
+    private UserType type;
 
     public User(String userName, String password, LocalDate dateOfBirth) {
         this.userName = userName;

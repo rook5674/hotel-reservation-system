@@ -16,13 +16,12 @@ public class Guest extends User{
 
     public Guest(String username, String password, LocalDate dob, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) {
         super(username, password, dob);
-        setRole(UserType.GUEST);
-        this.type = getRole(); // Set the user type to GUEST
+        setRole(UserType.GUEST);     // Set the user type to GUEST
         this.balance = 0.0; // Initialize balance to 0.0 for new guests
         this.address = address; 
         this.gender = gender; 
         this.roomPreferences = new RoomPreference(prefType, prefFloor, seaview, price);
-        //addGuest(this); // Add the guest to the system's list of guests
+        addGuest(this); // Add the guest to the system's list of guests
         }
 
     public double getBalance(String username, String password) {
