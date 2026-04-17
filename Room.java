@@ -33,6 +33,14 @@ public class Room {
         this.roomType = roomType;
     }
 
+    public void setFloor(int floor) throws Exception {
+        if (floor < 0)
+            throw new Exception("Error: Floor cannot be negative.");
+        else{
+        this.floor = floor;
+            }
+    }
+
     @Override
     public String toString() {
         return "Room " + roomNumber + " (Floor " + floor + ")" +
