@@ -2,20 +2,14 @@
 public class Staff extends User {
 
     Schedule workinghours ; 
+    private final StaffRole role;
 
-
-    private final staff_role role;
-    public enum staff_role {
-    Receptionist,
-    Admin
-    }
-
-    public Staff(String username, String password, java.time.LocalDate dateOfBirth, int StartTime, int EndTime, staff_role role) throws Exception {
+    
+    public Staff(String username, String password, java.time.LocalDate dateOfBirth, int StartTime, int EndTime, StaffRole role) throws Exception {
         super(username, password, dateOfBirth);
         super.setRole(UserType.Staff);
         this.workinghours = new Schedule(StartTime, EndTime);
         this.role = role;
-        addStaff(this);
 
     }
 
@@ -27,7 +21,7 @@ public class Staff extends User {
         this.workinghours = workinghours;
     }
 
-    public staff_role getstaff_role() {
+    public StaffRole getStaffRole() {
         return role;
     }
 }

@@ -26,6 +26,7 @@ public class Reservation {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.status = ReservationStatus.PENDING;
+        
     }
 
     // --- Validation ---
@@ -124,7 +125,7 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "id=" + reservationId +
-                ", guest=" + guest.getUsername() +
+                ", guest=" + guest.getUserName() +
                 ", room=" + room.getRoomNumber() +
                 ", checkIn=" + checkInDate +
                 ", checkOut=" + checkOutDate +

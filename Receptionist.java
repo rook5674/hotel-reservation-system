@@ -1,6 +1,6 @@
 public class Receptionist extends Staff {
-    public Receptionist(String username, String password, java.time.LocalDate dateOfBirth, int StartTime, int EndTime, staff_role role) throws Exception {
-        super(username, password, dateOfBirth, StartTime, EndTime, staff_role.Receptionist);
+    public Receptionist(String username, String password, java.time.LocalDate dateOfBirth, int StartTime, int EndTime ) throws Exception {   
+        super(username, password, dateOfBirth, StartTime, EndTime, StaffRole.Receptionist);
 
     }
 

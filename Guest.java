@@ -8,10 +8,6 @@ public class Guest extends User{
     private Gender gender;
     private RoomPreference roomPreferences;
     
-    public enum Gender {
-    MALE,
-    FEMALE
-    }
 
 
     public Guest(String username, String password, LocalDate dob, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) {
@@ -21,7 +17,7 @@ public class Guest extends User{
         this.address = address; 
         this.gender = gender; 
         this.roomPreferences = new RoomPreference(prefType, prefFloor, seaview, price);
-        addGuest(this); // Add the guest to the system's list of guests
+        // we cant add to the database in the constructor
         }
 
     public double getBalance(String username, String password) {
