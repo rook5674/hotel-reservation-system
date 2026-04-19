@@ -1,4 +1,15 @@
-public class RoomType {
+import interfaces.Budgetable;
+
+public class RoomType implements Budgetable {
+    @Override
+    public double getPrice() {
+        return basePricePerNight;
+    }
+
+    @Override
+    public boolean isAffordable(double budget) {
+        return basePricePerNight <= budget;
+    }
     private final int id;
     private String typeName;
     private int maxOccupancy;
