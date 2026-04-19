@@ -1,8 +1,13 @@
+
+
 public class Amenity {
+    public void display() {
+        System.out.println("Amenity: " + name + " (id=" + id + ")" +
+                "\n  Type: " + type);
+    }
     private int id;
     private String name;
     private AmenityType type;
-
     public Amenity(int id, String name, AmenityType type) throws Exception {
         if (name == null || name.isBlank())
             throw new Exception("Error: Amenity name cannot be empty.");
