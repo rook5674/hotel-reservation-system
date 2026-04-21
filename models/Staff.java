@@ -1,8 +1,11 @@
+package models;
+import enumerations.StaffRole;
+import enumerations.UserType;
 
 public class Staff extends User {
 
     Schedule workinghours ; 
-    private final StaffRole role;
+    protected final StaffRole role;
 
     
     public Staff(String username, String password, java.time.LocalDate dateOfBirth, int StartTime, int EndTime, StaffRole role) throws Exception {

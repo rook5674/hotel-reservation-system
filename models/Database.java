@@ -1,4 +1,9 @@
+package models;
 import java.util.ArrayList;
+
+import enumerations.AmenityType;
+import enumerations.Gender;
+
 import java.time.LocalDate;
 
 public class Database{
@@ -186,14 +191,14 @@ public class Database{
     }
 
 
-    public static Admin registerNewAdmin(String username, String password, LocalDate dateOfBirth, Schedule workingHours, int StartTime, int EndTime) {
+    public static Admin registerNewAdmin(String username, String password, LocalDate dateOfBirth, Schedule workingHours, int StartTime, int EndTime) throws Exception {
         Admin newAdmin = new Admin(username, password, dateOfBirth, StartTime, EndTime);
         staff.add(newAdmin);
         return newAdmin;
     }
 
 
-    public static Receptionist registerNewReceptionist(String username, String password, LocalDate dateOfBirth,  int StartTime, int EndTime)  {
+    public static Receptionist registerNewReceptionist(String username, String password, LocalDate dateOfBirth,  int StartTime, int EndTime) throws Exception  {
         // Notice we hardcode Role.RECEPTIONIST here
         Receptionist newReceptionist = new Receptionist(username, password, dateOfBirth, StartTime, EndTime);
         staff.add(newReceptionist);
@@ -201,7 +206,7 @@ public class Database{
     }
 
 
-    public static Room createAndAddRoom(int roomNumber, int floor, RoomType type) {
+    public static Room createAndAddRoom(int roomNumber, int floor, RoomType type) throws Exception {
         Room newRoom = new Room(roomNumber, floor, type);
         rooms.add(newRoom);
         return newRoom;
@@ -213,7 +218,7 @@ public class Database{
         return newRoomType;
     }
 
-    public static Amenity createAndAddAmenity(int id,String name , AmenityType type) {
+    public static Amenity createAndAddAmenity(int id,String name , AmenityType type) throws Exception {
         Amenity newAmenity = new Amenity(id, name, type);
         amenities.add(newAmenity);
         return newAmenity;
