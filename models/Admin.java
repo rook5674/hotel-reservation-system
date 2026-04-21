@@ -7,7 +7,7 @@ public class Admin extends Staff {
 
         super(name, password, dateOfBirth, StartTime, EndTime, StaffRole.Admin);
     }
-    
+
     public void createRoom(int roomNumber, RoomType roomType, int floor) throws Exception {
         Room newRoom = new Room(roomNumber, floor, roomType);
     
