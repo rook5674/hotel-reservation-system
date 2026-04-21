@@ -1,3 +1,4 @@
+package models;
 // Invoice.java
 import exceptions.InvalidPaymentException;
 
@@ -5,6 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import enumerations.PaymentMethod;
 
 public class Invoice {
 

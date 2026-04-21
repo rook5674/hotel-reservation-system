@@ -1,8 +1,11 @@
+package models;
 import exceptions.RoomNotAvailableException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 // --- Reservation.java ---
+
+import enumerations.ReservationStatus;
 
 public class Reservation {
 

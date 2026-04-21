@@ -1,5 +1,9 @@
+package models;
 
 import java.time.LocalDate;
+
+import enumerations.Gender;
+import enumerations.UserType;
 
 
 public class Guest extends User{

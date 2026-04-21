@@ -1,3 +1,6 @@
+package models;
+import enumerations.StaffRole;
+import enumerations.UserType;
 
 public class Staff extends User {
 

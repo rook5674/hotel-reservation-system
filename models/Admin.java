@@ -1,3 +1,6 @@
+package models;
+import enumerations.StaffRole;
+
 public class Admin extends Staff {
 
     public Admin(String name, String password, java.time.LocalDate dateOfBirth, int StartTime, int EndTime) throws Exception {

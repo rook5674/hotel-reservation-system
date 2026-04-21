@@ -1,3 +1,4 @@
+package models;
 public class Schedule {
     private int startTime; 
     private int endTime; // Assuming time is represented in 24-hour format as an integer (e.g., 900 for 9:00 AM, 1700 for 5:00 PM)

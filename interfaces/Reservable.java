@@ -1,4 +1,6 @@
 package interfaces;
+import models.Room;
+import models.Reservation;
 
 public interface Reservable {
 void makeReservation(Room room); 

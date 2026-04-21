@@ -1,4 +1,7 @@
+package models;
 import java.time.LocalDate;
+
+import enumerations.UserType;
 
 abstract class User {
     private String userName;

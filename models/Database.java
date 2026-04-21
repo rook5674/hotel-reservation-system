@@ -1,4 +1,9 @@
+package models;
 import java.util.ArrayList;
+
+import enumerations.AmenityType;
+import enumerations.Gender;
+
 import java.time.LocalDate;
 
 public class Database{
