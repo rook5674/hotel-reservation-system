@@ -8,7 +8,7 @@ public class Receptionist extends Staff {
     }
 
     public boolean checkInGuest(Reservation reservation) {
-        if (reservation.getStatus() == enumerations.ReservationStatus.CONFIRMED && reservation.getRoom().isAvailable()) {
+        if (reservation.getStatus() == enumerations.ReservationStatus.CONFIRMED ) {
             reservation.getRoom().setAvailable(false);
             return true;
         }

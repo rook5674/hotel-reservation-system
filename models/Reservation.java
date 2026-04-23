@@ -86,6 +86,13 @@ public class Reservation {
     }
 
     public void complete() {
+        if(status == ReservationStatus.COMPLETED) {
+            return; // Already completed, no action needed
+        }
+        if(status == ReservationStatus.CANCELLED) {
+            throw new IllegalStateException("Cannot complete a cancelled reservation.");
+        }
+
         if (status != ReservationStatus.CONFIRMED) {
             throw new IllegalStateException("Only CONFIRMED reservations can be completed. Current status: " + status);
         }
