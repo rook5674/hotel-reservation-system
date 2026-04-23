@@ -1,7 +1,7 @@
 package interfaces;
 
-public interface Manageable {
-void add(); 
-void update(); 
-void delete();
+public interface Manageable<T> {
+    void create(T item) throws Exception;
+    T read(int id);
+    void delete(int id) throws Exception;
 }

@@ -237,6 +237,13 @@ public class Database{
     }
 
 
+    public static ArrayList<Guest> getAllGuests() { return guests; }
+    public static ArrayList<Room> getAllRooms() { return rooms; }
+    public static ArrayList<Reservation> getAllReservations() { return reservations; }
+    public static ArrayList<RoomType> getAllRoomTypes() { return roomTypes; }
+    public static ArrayList<Amenity> getAllAmenities() { return amenities; }
+
+
 
 
 

@@ -6,7 +6,7 @@ import enumerations.Gender;
 import enumerations.UserType;
 
 
-public class Guest extends User{
+public class Guest extends User implements interfaces.Reservable{
     private double balance;
     private String address;
     private Gender gender;
@@ -108,6 +108,46 @@ public class Guest extends User{
             }
         } else {
             System.out.println("Access denied. Invalid username or password.");
+        }
+    }
+
+    @Override
+    public void makeReservation(Room room) {
+        System.out.println("Initiating reservation for " + this.getUserName() + " in room " + room.getRoomNumber());
+        
+        if (room.isAvailable()) {
+            Reservation newRes = Database.createAndAddReservation(this, room, LocalDate.now(), LocalDate.now().plusDays(1));
+            room.setAvailable(false);
+            System.out.println("Success! Reservation ID: " + newRes.getReservationId());
+        } else {
+            System.out.println("Sorry, room " + room.getRoomNumber() + " is currently unavailable.");
+        }
+    }
+
+    @Override
+    public void cancelReservation(Reservation reservation) {
+        if (reservation != null && reservation.getGuest().equals(this)) {
+            reservation.cancel(); // This method inside Reservation.java automatically frees the room
+            System.out.println("Reservation #" + reservation.getReservationId() + " has been cancelled.");
+        } else {
+            System.out.println("Error: You do not have permission to cancel this reservation.");
+        }
+    }
+
+    @Override
+    public void viewReservations() {
+        System.out.println("--- Reservations for " + this.getUserName() + " ---");
+        boolean hasReservations = false;
+        
+        for (Reservation res : Database.getAllReservations()) {
+            if (res.getGuest().equals(this)) {
+                System.out.println(res.toString());
+                hasReservations = true;
+            }
+        }
+        
+        if (!hasReservations) {
+            System.out.println("You have no active reservations.");
         }
     }
 }

@@ -3,7 +3,7 @@ import java.time.LocalDate;
 
 import enumerations.UserType;
 
-abstract class User {
+abstract class User implements interfaces.Authenticatable{
     private String userName;
     private String password;
     private LocalDate dateOfBirth;
@@ -65,7 +65,12 @@ abstract class User {
         }
     }
 
+    @Override
+    public void register() {
+        // Since your Database factory methods handle the actual saving, 
+        // this can just be a confirmation behavior.
+        System.out.println("User " + this.userName + " is successfully registered.");
+    }
 
- 
     
 }
