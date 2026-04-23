@@ -7,17 +7,18 @@ public class Receptionist extends Staff {
 
     }
 
-    public boolean checkInGuest(Guest guest, Room room) {
-        if (room.isAvailable()) {
-            room.setAvailable(false); 
+    public boolean checkInGuest(Reservation reservation) {
+        if (reservation.getStatus() == enumerations.ReservationStatus.CONFIRMED && reservation.getRoom().isAvailable()) {
+            reservation.getRoom().setAvailable(false);
             return true;
         }
         return false;
     }
 
-    public boolean checkOutGuest(Guest guest, Room room) {
-        if (!room.isAvailable()) {
-            room.setAvailable(true); 
+    public boolean checkOutGuest(Reservation reservation) {
+        if (!reservation.getRoom().isAvailable()) {
+            reservation.getRoom().setAvailable(true);
+            reservation.complete(); 
             return true;
         }
         return false;

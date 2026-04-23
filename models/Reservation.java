@@ -10,7 +10,6 @@ import enumerations.ReservationStatus;
 public class Reservation {
 
     private static int idCounter = 1;
-    private RoomType roomType;
     private int reservationId;
     private Guest guest;
     private Room room;

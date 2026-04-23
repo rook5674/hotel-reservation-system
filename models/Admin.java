@@ -61,6 +61,23 @@ public class Admin extends Staff implements interfaces.Manageable<Room> {
         return false;
     }
 
+
+    @Override
+    public boolean create(Room item) throws Exception {
+        Database.addRoom(item);
+        return true;
+    }
+
+    @Override
+    public Room read(int roomNumber) {
+        return Database.getRoomByNumber(roomNumber);
+    }
+
+    @Override
+    public boolean delete(int roomNumber) throws Exception {
+        return Database.removeRoom(roomNumber);
+    }
+
     public boolean resetUserPassword(String targetUsername, String newPassword) throws Exception {
         Guest guest = Database.getGuestByUsername(targetUsername);
         if (guest != null) {
@@ -102,37 +119,4 @@ public class Admin extends Staff implements interfaces.Manageable<Room> {
         return false;
     }
 
-    // public void createRoom(int roomNumber, RoomType roomType, int floor) throws Exception {
-    //     Room newRoom = new Room(roomNumber, floor, roomType);
-    
-    //     Database.addRoom(newRoom); 
-    // }
-    
-    // public Room readRoom(int roomNumber) {
-    //     return Database.getRoomByNumber(roomNumber);
-        
-    // } 
-
-        
-    // public void deleteRoom(int roomNumber) throws Exception {
-    //     Database.removeRoom(roomNumber); //database for room with roomNumber and remove it
-
-    // }
-
-    @Override
-    public boolean create(Room item) throws Exception {
-        Database.addRoom(item);
-        return true;
-    }
-
-    @Override
-    public Room read(int roomNumber) {
-        return Database.getRoomByNumber(roomNumber);
-    }
-
-    @Override
-    public boolean delete(int roomNumber) throws Exception {
-        Database.removeRoom(roomNumber);
-        return true;
-    }
 }

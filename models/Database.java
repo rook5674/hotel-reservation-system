@@ -194,7 +194,7 @@ public class Database{
     }
 
 
-    public static Admin registerNewAdmin(String username, String password, LocalDate dateOfBirth, Schedule workingHours, int StartTime, int EndTime) throws Exception {
+    public static Admin registerNewAdmin(String username, String password, LocalDate dateOfBirth, int StartTime, int EndTime) throws Exception {
         if (getGuestByUsername(username) != null || getStaffByUsername(username) != null) {
             throw new Exception("Error: Username '" + username + "' is already taken.");
         }
@@ -251,6 +251,97 @@ public class Database{
     public static ArrayList<RoomType> getAllRoomTypes() { return roomTypes; }
     public static ArrayList<Amenity> getAllAmenities() { return amenities; }
     public static java.util.ArrayList<Staff> getAllStaff() { return staff; }
+
+
+
+    //created by gemini 3ashan seif te3eb :D
+    public static void initializeDummyData() {
+        try {
+            System.out.println("Initializing Database with extensive dummy data...");
+
+            // 1. Create Amenities (Covering all enum types)
+            Amenity wifi = createAndAddAmenity(1, "High-Speed WiFi", enumerations.AmenityType.WIFI);
+            Amenity tv = createAndAddAmenity(2, "4K Smart TV", enumerations.AmenityType.TV);
+            Amenity ac = createAndAddAmenity(3, "Central A/C", enumerations.AmenityType.AIR_CONDITIONING);
+            Amenity minibar = createAndAddAmenity(4, "Fully Stocked Minibar", enumerations.AmenityType.MINI_BAR);
+            Amenity balcony = createAndAddAmenity(5, "Ocean View Balcony", enumerations.AmenityType.BALCONY);
+            Amenity breakfast = createAndAddAmenity(6, "Continental Breakfast", enumerations.AmenityType.BREAKFAST_INCLUDED);
+            Amenity hairDryer = createAndAddAmenity(7, "Hair Dryer", enumerations.AmenityType.HAIR_DRYER);
+
+            // 2. Create Room Types & Assign Amenities
+            RoomType single = createAndAddRoomType("Standard Single", 100.0, 101, 1);
+            single.addAmenity(wifi); single.addAmenity(ac); single.addAmenity(tv);
+
+            RoomType doubleRoom = createAndAddRoomType("Deluxe Double", 150.0, 102, 2);
+            doubleRoom.addAmenity(wifi); doubleRoom.addAmenity(ac); doubleRoom.addAmenity(tv); doubleRoom.addAmenity(hairDryer);
+
+            RoomType suite = createAndAddRoomType("Executive Suite", 350.0, 103, 4);
+            suite.addAmenity(wifi); suite.addAmenity(ac); suite.addAmenity(tv); suite.addAmenity(minibar); suite.addAmenity(breakfast);
+
+            RoomType penthouse = createAndAddRoomType("Presidential Penthouse", 850.0, 104, 6);
+            penthouse.addAmenity(wifi); penthouse.addAmenity(ac); penthouse.addAmenity(tv); penthouse.addAmenity(minibar); 
+            penthouse.addAmenity(breakfast); penthouse.addAmenity(balcony); penthouse.addAmenity(hairDryer);
+
+            // 3. Create Physical Rooms (Across 4 floors)
+            // Floor 1 (Standard)
+            createAndAddRoom(101, 1, single);
+            createAndAddRoom(102, 1, single);
+            createAndAddRoom(103, 1, doubleRoom);
+            // Floor 2 (Deluxe)
+            createAndAddRoom(201, 2, doubleRoom);
+            createAndAddRoom(202, 2, doubleRoom);
+            createAndAddRoom(203, 2, suite);
+            // Floor 3 (Executive)
+            createAndAddRoom(301, 3, suite);
+            createAndAddRoom(302, 3, suite);
+            // Floor 4 (Penthouse)
+            createAndAddRoom(401, 4, penthouse);
+            createAndAddRoom(402, 4, penthouse);
+
+            // 4. Create Staff (Morning and Night Shifts)
+            registerNewAdmin("admin_boss", "admin123", LocalDate.of(1980, 5, 20), 800, 1600); // 8 AM - 4 PM
+            registerNewReceptionist("rec_morning", "rec123", LocalDate.of(1995, 8, 15), 800, 1600); // 8 AM - 4 PM
+            registerNewReceptionist("rec_night", "rec123", LocalDate.of(1992, 11, 5), 1600, 2359); // 4 PM - Midnight
+
+            // 5. Create Guests with diverse preferences
+            Guest guest1 = registerNewGuest("ahmed_99", "password123", LocalDate.of(1999, 1, 15), 500.0, 
+                "New Cairo, Egypt", enumerations.Gender.MALE, suite, 3, true, 400.0);
+            
+            Guest guest2 = registerNewGuest("sarah_smith", "password123", LocalDate.of(1985, 6, 30), 1200.0, 
+                "London, UK", enumerations.Gender.FEMALE, penthouse, 4, true, 900.0);
+            
+            Guest guest3 = registerNewGuest("mohamed_ali", "password123", LocalDate.of(2001, 12, 10), 0.0, 
+                "Alexandria, Egypt", enumerations.Gender.MALE, single, 1, false, 150.0);
+
+            // 6. Simulate Active Reservations
+            // Ahmed books a suite starting today for 3 nights
+            Room bookedSuite = getRoomByNumber(301);
+            Reservation res1 = createAndAddReservation(guest1, bookedSuite, LocalDate.now(), LocalDate.now().plusDays(3));
+            res1.confirm();      // Admin/System confirms it
+            bookedSuite.setAvailable(false); // Room becomes physically occupied
+
+            // Sarah books a penthouse starting tomorrow for 5 nights
+            Room bookedPenthouse = getRoomByNumber(401);
+            Reservation res2 = createAndAddReservation(guest2, bookedPenthouse, LocalDate.now().plusDays(1), LocalDate.now().plusDays(6));
+            res2.confirm();
+            bookedPenthouse.setAvailable(false);
+
+            // 7. Simulate an Invoice for a completed/paid reservation
+            Invoice invoice1 = createAndAddInvoice(res1);
+            // Assuming Ahmed paid half online and will pay the rest in cash (testing multiple payments!)
+            java.util.List<enumerations.PaymentMethod> mixedPayments = new java.util.ArrayList<>();
+            mixedPayments.add(enumerations.PaymentMethod.ONLINE);
+            mixedPayments.add(enumerations.PaymentMethod.CASH);
+            invoice1.pay(mixedPayments); 
+            // Note: calling invoice.pay() automatically sets the reservation status to COMPLETED!
+
+            System.out.println(" Dummy data successfully loaded! (10 Rooms, 3 Guests, 3 Staff, 2 Reservations)");
+
+        } catch (Exception e) {
+            System.err.println(" Error loading dummy data: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
 
 
