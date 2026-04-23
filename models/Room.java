@@ -56,12 +56,17 @@ public class Room implements interfaces.Bookable {
     }
 
     @Override
-    public void book() {
-        this.isAvailable = false;
+    public boolean book() {
+        if (this.isAvailable) {
+            this.isAvailable = false;
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void release() {
+    public boolean release() {
         this.isAvailable = true;
+        return true;
     }
 }

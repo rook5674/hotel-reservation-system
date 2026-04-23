@@ -56,6 +56,22 @@ abstract class User implements interfaces.Authenticatable{
         else
             return false;
     }
+
+    public void forceSetPassword(String newPassword) throws Exception {
+        if (newPassword == null || newPassword.length() < 6) {
+            throw new Exception("Error: Password must be at least 6 characters long.");
+        }
+        this.password = newPassword;
+    }
+
+    public void forceSetUserName(String newUserName) throws Exception {
+        if (newUserName == null || newUserName.isBlank()) {
+            throw new Exception("Error: Username cannot be empty.");
+        }
+        this.userName = newUserName;
+    }
+
+
     public UserType getRole() {
         return type;
     }
@@ -63,21 +79,13 @@ abstract class User implements interfaces.Authenticatable{
         this.type = type;
     }
     public boolean login(String userName, String password) {
-        if (this.userName.equals(userName) && this.password.equals(password)) {
-            System.out.println("Login successful!");
-            return true;
-        } else {
-            System.out.println("Invalid username or password.");
-            return false;
-        }
+        return this.userName.equals(userName) && this.password.equals(password);
     }
 
     @Override
-    public void register() {
-        // Since your Database factory methods handle the actual saving, 
-        // this can just be a confirmation behavior.
-        System.out.println("User " + this.userName + " is successfully registered.");
+    public boolean register() {
+        // UI will handle success messages. Database handles actual creation.
+        return true;
     }
-
     
 }

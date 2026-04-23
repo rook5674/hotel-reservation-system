@@ -68,7 +68,7 @@ public class Reservation {
     }
 
     public double calculateTotalCost() {
-        return getNumberOfNights() *  roomType.getBasePricePerNight();
+        return getNumberOfNights() *  this.room.getRoomType().getBasePricePerNight();
     }
 
     public void confirm() {

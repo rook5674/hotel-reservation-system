@@ -35,11 +35,12 @@ public class Guest extends User implements interfaces.Reservable {
             return -1; // Return -1 to indicate access denied
         }
     }
-    public void setBalance(String username, String password, double balance) {
+    public boolean setBalance(String username, String password, double balance) {
         if (this.login(username, password)) {
             this.balance = balance;
+            return true;
         } else {
-            System.out.println("Access denied. Invalid username or password.");
+            return false;
         }
 
     }
@@ -47,35 +48,36 @@ public class Guest extends User implements interfaces.Reservable {
         if (this.login(username, password)) {
             return address;
         } else {
-            System.out.println("Access denied. Invalid username or password.");
-            return null; // Return null to indicate access denied
+            return null; 
         }
     }
 
-    public void setAddress(String username, String password, String address) {
+    public boolean setAddress(String username, String password, String address) {
         if (this.login(username, password)) {
             this.address = address;
+            return true;
         } else {
-            System.out.println("Access denied. Invalid username or password.");
+            return false;
         }
     }
+    
 
     public Gender getGender(String username, String password) {
         if (this.login(username, password)) {
             return gender;
         } else {
-            System.out.println("Access denied. Invalid username or password.");     
 
             return null; // Return null to indicate access denied
         }
 
     }
 
-    public void setGender(String username, String password, Gender gender) {
+    public boolean setGender(String username, String password, Gender gender) {
         if (this.login(username, password)) {
             this.gender = gender;
+            return true;
         } else {
-            System.out.println("Access denied. Invalid username or password.");
+            return false;
         }
     }
 
@@ -83,73 +85,68 @@ public class Guest extends User implements interfaces.Reservable {
         if (this.login(username, password)) {
             return roomPreferences;
         } else {
-            System.out.println("Access denied. Invalid username or password.");
             return null; // Return null to indicate access denied
         }
     }
 
-    public void setRoomPreferences(String username, String password, RoomType prefType, int prefFloor, boolean seaview , double price) {
+    public boolean setRoomPreferences(String username, String password, RoomType prefType, int prefFloor, boolean seaview , double price) {
         if (this.login(username, password)) {
             this.roomPreferences = new RoomPreference(prefType, prefFloor, seaview, price);
+            return true;
         } else {
-            System.out.println("Access denied. Invalid username or password.");
+
+            return false;
         }
     }
 
-    public void makeReservation(Room room, LocalDate checkInDate, LocalDate checkOutDate, String username, String password) {
-        if (this.login(username, password)) {
-            System.out.println("Making reservation for " + username + " at " + room.getRoomNumber() + " from " + checkInDate + " to " + checkOutDate);
-            if (room.isAvailable()) {
-                    room.setAvailable(false); // Mark the room as unavailable
-                    System.out.println("Reservation successful for room " + room.getRoomNumber());
-               
-            } else {
-                System.out.println("Sorry, room " + room.getRoomNumber() + " is not available for the selected dates.");
-            }
-        } else {
-            System.out.println("Access denied. Invalid username or password.");
-        }
-    }
+
 
     @Override
-    public void makeReservation(Room room) {
-        System.out.println("Initiating reservation for " + this.getUserName() + " in room " + room.getRoomNumber());
-        
+    public boolean makeReservation(Room room) {
         if (room.isAvailable()) {
-            Reservation newRes = Database.createAndAddReservation(this, room, LocalDate.now(), LocalDate.now().plusDays(1));
+            Database.createAndAddReservation(this, room, LocalDate.now(), LocalDate.now().plusDays(1));
             room.setAvailable(false);
-            System.out.println("Success! Reservation ID: " + newRes.getReservationId());
-        } else {
-            System.out.println("Sorry, room " + room.getRoomNumber() + " is currently unavailable.");
-        }
+            return true;
+        } 
+        return false;
     }
 
     @Override
-    public void cancelReservation(Reservation reservation) {
+    public boolean cancelReservation(Reservation reservation) {
         if (reservation != null && reservation.getGuest().equals(this)) {
-            reservation.cancel(); // This method inside Reservation.java automatically frees the room
-            System.out.println("Reservation #" + reservation.getReservationId() + " has been cancelled.");
-        } else {
-            System.out.println("Error: You do not have permission to cancel this reservation.");
+            reservation.cancel(); 
+            return true;
         }
+        return false;
     }
 
     @Override
-    public void viewReservations() {
-        System.out.println("--- Reservations for " + this.getUserName() + " ---");
-        boolean hasReservations = false;
-        
+    public java.util.ArrayList<Reservation> viewReservations() {
+        java.util.ArrayList<Reservation> myReservations = new java.util.ArrayList<>();
         for (Reservation res : Database.getAllReservations()) {
-            if (res.getGuest().equals(this)) {
-                System.out.println(res.toString());
-                hasReservations = true;
-            }
+            if (res.getGuest().equals(this)) myReservations.add(res);
         }
-        
-        if (!hasReservations) {
-            System.out.println("You have no active reservations.");
+        return myReservations;
+    }
+
+    public java.util.ArrayList<Room> viewAvailableRooms() {
+        java.util.ArrayList<Room> availableRooms = new java.util.ArrayList<>();
+        for (Room r : Database.getAllRooms()) {
+            if (r.isAvailable()) availableRooms.add(r);
         }
+        return availableRooms;
+    }
+
+    public boolean checkoutAndPay(Reservation reservation, enumerations.PaymentMethod method) {
+        if (reservation.getGuest().equals(this)) {
+            Invoice invoice = Database.createAndAddInvoice(reservation);
+            invoice.pay(method);
+            return true;
+        }
+        return false;
     }
 }
+
+
 
     
