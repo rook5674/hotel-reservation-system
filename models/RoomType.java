@@ -19,8 +19,8 @@ public class RoomType implements Budgetable {
     private int amenityCount;
 
     public RoomType(int id, String typeName, int maxOccupancy, double basePricePerNight) throws Exception {
-        if (typeName == null || typeName.isBlank())
-            throw new Exception("Error: Room type name cannot be empty.");
+        if (typeName == null)
+            throw new Exception("Error: Room type name cannot be null.");
         if (maxOccupancy <= 0)
             throw new Exception("Error: Max occupancy must be positive.");
         if (basePricePerNight < 0)
@@ -70,8 +70,8 @@ public class RoomType implements Budgetable {
     public double getBasePricePerNight() { return basePricePerNight; }
 
     public void setTypeName(String typeName) throws Exception {
-        if (typeName == null || typeName.isBlank())
-            throw new Exception("Error: Room type name cannot be empty.");
+        if (typeName == null)
+            throw new Exception("Error: Room type name cannot be null.");
         this.typeName = typeName;
     }
 
@@ -89,10 +89,10 @@ public class RoomType implements Budgetable {
 
     @Override
     public String toString() {
-        String result = "RoomType: " + typeName + " (id=" + id + ")" +
-                "\n  Max Occupancy: " + maxOccupancy +
-                "\n  Price per Night: " + basePricePerNight +
-                "\n  Amenities: ";
+        String result = typeName + "\n" + id  + 
+                "\n" + maxOccupancy +
+                "\n" + basePricePerNight +
+                "\n";
         if (amenityCount == 0) {
             result += "None";
         } else {
@@ -102,4 +102,6 @@ public class RoomType implements Budgetable {
         }
         return result;
     }
+
+
 }

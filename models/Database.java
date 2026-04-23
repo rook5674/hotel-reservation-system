@@ -3,8 +3,14 @@ import java.util.ArrayList;
 
 import enumerations.AmenityType;
 import enumerations.Gender;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.File;
+import java.util.Scanner;
 
 import java.time.LocalDate;
+
 
 public class Database{
     private static ArrayList<Room> rooms = new ArrayList<Room>();
@@ -23,6 +29,8 @@ public class Database{
 
 
 
+
+
     public static void addRoom (Room room){
         rooms.add(room);
     }
@@ -32,6 +40,7 @@ public class Database{
     public static void addGuest (Guest guest){
         guests.add(guest);
     }
+
     public static void addStaff (Staff staffMember){
         staff.add(staffMember);
     }
@@ -112,7 +121,7 @@ public class Database{
         return false;
     }
 
-    // search methods for getting objects from names or ids
+    
 
 
 
@@ -125,10 +134,11 @@ public class Database{
         return null; 
     }
 
-    public static Guest getGuestByUsername(String username) {
+    public static Guest getGuest(String username , String password) {
         for (Guest guest : guests) {
-            if (guest.getUserName().equals(username)) {
+            if (guest.getUserName().equals(username) && guest.getPassword().equals(password)) {
                 return guest;
+                //return loadGuestFromTextFile(username, password);
             }
         }
         return null;
@@ -145,7 +155,7 @@ public class Database{
 
     public static RoomType getRoomTypeByName(String typeName) {
         for (RoomType roomType : roomTypes) {
-            if (roomType.getTypeName().equalsIgnoreCase(typeName)) {
+            if (roomType.getTypeName().equals(typeName)) {
                 return roomType;
             }
         }
@@ -185,8 +195,9 @@ public class Database{
 
 
     public static Guest registerNewGuest(String username, String password, LocalDate dateOfBirth, double balance, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) {
-        Guest newGuest = new Guest(username, password, dateOfBirth, address, gender, prefType, prefFloor, seaview , price);
+        Guest newGuest = new Guest(username, password, dateOfBirth, address, gender, prefType, prefFloor, seaview, price);
         guests.add(newGuest);
+        SaveGuestToTextFile(newGuest);
         return newGuest;
     }
 
@@ -236,6 +247,107 @@ public class Database{
         return newInvoice;
     }
 
+    public static void SaveGuestToTextFile(Guest guest) {
+    
+    String seperator = "--------------------------------" ;
+    
+    
+   if (guestExistsInTextFile(guest.getUserName(), guest.getPassword()))
+        {
+            System.out.println("Guest already exists in the text file. Skipping save.");
+             // Skip saving if the guest already exists in the text file
+}
+    else    
+   {
+        try (PrintWriter writer = new PrintWriter (new FileWriter("hotel-reservation-system/IOfiles/guests.txt", true))) {
+            writer.println(guest.getUserName());
+            writer.println(guest.getPassword());
+            writer.println(guest.getDateOfBirth().toString());
+            writer.println(guest.getAddress(guest.getUserName(), guest.getPassword()));
+            writer.println(guest.getGender(guest.getUserName(), guest.getPassword()).name());
+            writer.println(guest.getRoomPreferences(guest.getUserName(), guest.getPassword()));
+            writer.println(guest.getBalance(guest.getUserName(), guest.getPassword())); // Separator between guests
+            writer.println( seperator );
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while saving guest information: " + e.getMessage());
+        }
+
+        }
+
+
+    }
+
+    public static Gender getvalueOfGenderusingString(String name) {
+
+    if (name == "MALE")
+        return Gender.MALE;
+    else if (name == "FEMALE")
+    {
+        return Gender.FEMALE;
+    }
+    else
+        return null;    
+}
+
+    public static Guest loadGuestFromTextFile(String username, String password) {
+       
+        File file = new File("hotel-reservation-system/IOfiles/guests.txt");
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String fileUsername = scanner.nextLine();
+                String filePassword = scanner.nextLine();
+                if (fileUsername.equals(username) && filePassword.equals(password)) {
+                    LocalDate dateOfBirth = LocalDate.parse(scanner.nextLine());
+                    String fileAddress = scanner.nextLine();
+                    Gender fileGender = Gender.valueOf(scanner.nextLine());
+                    RoomType fileRoomType = Database.getRoomTypeByName(scanner.nextLine());
+                    int fileRoomID = Integer.parseInt(scanner.nextLine());
+                    int fileMaxOccupancy = Integer.parseInt(scanner.nextLine());
+                    double filePrice = Double.parseDouble(scanner.nextLine());
+                    String fileAmenities = scanner.nextLine(); // This line is currently not used, but you can implement parsing if needed
+                    int filePreferredFloornumber = Integer.parseInt(scanner.nextLine());
+                    boolean fileSeaview = Boolean.parseBoolean(scanner.nextLine());
+                    double fileBalance = Double.parseDouble(scanner.nextLine());
+                    scanner.nextLine(); // Skip the separator line
+
+                    Guest guest = new Guest(fileUsername, filePassword, dateOfBirth, fileAddress, Database.getvalueOfGenderusingString(fileGender.name()), fileRoomType, filePreferredFloornumber, fileSeaview, filePrice);
+                    guest.setAddress(fileUsername, filePassword, fileAddress);
+                    guest.setGender(fileUsername, filePassword, Database.getvalueOfGenderusingString(fileGender.name()));
+                    guest.setRoomPreferences( fileRoomType, filePreferredFloornumber, fileSeaview, filePrice);
+                    guest.setBalance(fileUsername, filePassword, fileBalance);
+
+                    return guest;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred while loading guest information: " + e.getMessage());
+        }
+
+        return null; // Return null if guest not found
+    }
+
+    public static boolean guestExistsInTextFile(String username, String password) {
+        File file = new File("hotel-reservation-system/IOfiles/guests.txt");
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String fileUsername = scanner.nextLine();
+                String filePassword = scanner.nextLine();
+                if (fileUsername.equals(username) && filePassword.equals(password)) {
+                    return true; // Guest exists in the text file
+                }
+                // Skip the rest of the guest information
+                for (int i = 0; i < 7; i++) {
+                    if (scanner.hasNextLine()) {
+                        scanner.nextLine();
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while checking guest existence: " + e.getMessage());
+        }
+        return false; // Guest does not exist in the text file
+    }
 
 
 

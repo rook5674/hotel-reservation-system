@@ -15,15 +15,21 @@ public  class RoomPreference{
     }
 
 
-    @Override
-    public String toString() {
-        String typeName = (preferredRoomType != null) ? preferredRoomType.getTypeName() : "No Preference";
-        return "Room Preferences:" +
-                "\n - Preferred Type: " + typeName +
-                "\n - Preferred Floor: " + preferredFloornumber +
-                "\n - Sea View: " + (seaview ? "Yes" : "No") ;
+    public String getPreferredRoomType() {
+        return preferredRoomType.toString();
+    }
+    public boolean isSeaview() {
+        return seaview; 
+    }
+    public int getPreferredFloornumber() {
+        return preferredFloornumber;
     }
 
+
+    public double getPrice() {
+        return price;
+    }
+    
 
 
 

@@ -1,9 +1,8 @@
 package models;
 
-import java.time.LocalDate;
-
 import enumerations.Gender;
 import enumerations.UserType;
+import java.time.LocalDate;
 
 
 public class Guest extends User{
@@ -14,7 +13,7 @@ public class Guest extends User{
     
 
 
-    public Guest(String username, String password, LocalDate dob, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) {
+    public Guest(String username, String password, LocalDate dob , String address , Gender gender , RoomType prefType, int prefFloor, boolean seaview , double price ) {
         super(username, password, dob);
         setRole(UserType.GUEST);     // Set the user type to GUEST
         this.balance = 0.0; // Initialize balance to 0.0 for new guests
@@ -52,7 +51,7 @@ public class Guest extends User{
         }
     }
 
-    public void setAddress(String username, String password, String address) {
+    public void setAddress(String username , String password, String address) {
         if (this.login(username, password)) {
             this.address = address;
         } else {
@@ -79,21 +78,18 @@ public class Guest extends User{
         }
     }
 
-    public RoomPreference getRoomPreferences(String username, String password) {
+    public String getRoomPreferences(String username, String password) {
         if (this.login(username, password)) {
-            return roomPreferences;
+            return this.roomPreferences.getPreferredRoomType() + "\n" + this.roomPreferences.getPreferredFloornumber() + "\n" + this.roomPreferences.isSeaview() + "\n" + this.roomPreferences.getPrice();
         } else {
             System.out.println("Access denied. Invalid username or password.");
             return null; // Return null to indicate access denied
         }
     }
 
-    public void setRoomPreferences(String username, String password, RoomType prefType, int prefFloor, boolean seaview , double price) {
-        if (this.login(username, password)) {
+    public void setRoomPreferences(RoomType prefType, int prefFloor, boolean seaview , double price) {
             this.roomPreferences = new RoomPreference(prefType, prefFloor, seaview, price);
-        } else {
-            System.out.println("Access denied. Invalid username or password.");
-        }
+       
     }
 
     public void makeReservation(Room room, LocalDate checkInDate, LocalDate checkOutDate, String username, String password) {
@@ -110,6 +106,9 @@ public class Guest extends User{
             System.out.println("Access denied. Invalid username or password.");
         }
     }
+
+   
+
 }
 
     

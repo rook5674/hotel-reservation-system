@@ -3,3 +3,4 @@ package enumerations;
     MALE,
     FEMALE
     }
+

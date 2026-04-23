@@ -1,7 +1,6 @@
 package models;
-import java.time.LocalDate;
-
 import enumerations.UserType;
+import java.time.LocalDate;
 
 abstract class User {
     private String userName;
@@ -41,8 +40,8 @@ abstract class User {
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
-    public boolean setDateOfBirth(LocalDate dateOfBirth, String password) {
-        if (this.password.equals(password)) {
+    public boolean setDateOfBirth(LocalDate dateOfBirth,String userName, String password) {
+        if (this.password.equals(password) && this.userName.equals(userName)) {
             this.dateOfBirth = dateOfBirth;
             return true;
         }
