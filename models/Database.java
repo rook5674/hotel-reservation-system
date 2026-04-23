@@ -184,7 +184,10 @@ public class Database{
 
 
 
-    public static Guest registerNewGuest(String username, String password, LocalDate dateOfBirth, double balance, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) {
+    public static Guest registerNewGuest(String username, String password, LocalDate dateOfBirth, double balance, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) throws Exception {
+        if (getGuestByUsername(username) != null || getStaffByUsername(username) != null) {
+            throw new Exception("Error: Username '" + username + "' is already taken.");
+        }
         Guest newGuest = new Guest(username, password, dateOfBirth, address, gender, prefType, prefFloor, seaview , price);
         guests.add(newGuest);
         return newGuest;
@@ -192,6 +195,9 @@ public class Database{
 
 
     public static Admin registerNewAdmin(String username, String password, LocalDate dateOfBirth, Schedule workingHours, int StartTime, int EndTime) throws Exception {
+        if (getGuestByUsername(username) != null || getStaffByUsername(username) != null) {
+            throw new Exception("Error: Username '" + username + "' is already taken.");
+        }
         Admin newAdmin = new Admin(username, password, dateOfBirth, StartTime, EndTime);
         staff.add(newAdmin);
         return newAdmin;
@@ -199,7 +205,9 @@ public class Database{
 
 
     public static Receptionist registerNewReceptionist(String username, String password, LocalDate dateOfBirth,  int StartTime, int EndTime) throws Exception  {
-        // Notice we hardcode Role.RECEPTIONIST here
+        if (getGuestByUsername(username) != null || getStaffByUsername(username) != null) {
+            throw new Exception("Error: Username '" + username + "' is already taken.");
+        }
         Receptionist newReceptionist = new Receptionist(username, password, dateOfBirth, StartTime, EndTime);
         staff.add(newReceptionist);
         return newReceptionist;

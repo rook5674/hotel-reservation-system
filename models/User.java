@@ -9,7 +9,14 @@ abstract class User implements interfaces.Authenticatable{
     private LocalDate dateOfBirth;
     private UserType type;
 
-    public User(String userName, String password, LocalDate dateOfBirth) {
+    public User(String userName, String password, LocalDate dateOfBirth) throws Exception {
+        if (password == null || password.length() < 6) {
+            throw new Exception("Password must be at least 6 characters long.");
+        } else if (userName == null ) {
+            throw new Exception("Username cannot be empty.");
+        } else if (dateOfBirth == null || dateOfBirth.isAfter(LocalDate.now())) {
+            throw new Exception("Date of birth must be a valid past date.");
+        }
         this.userName = userName;
         this.password = password;
         this.dateOfBirth = dateOfBirth;

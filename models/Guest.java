@@ -6,7 +6,7 @@ import enumerations.Gender;
 import enumerations.UserType;
 
 
-public class Guest extends User implements interfaces.Reservable{
+public class Guest extends User implements interfaces.Reservable {
     private double balance;
     private String address;
     private Gender gender;
@@ -14,7 +14,7 @@ public class Guest extends User implements interfaces.Reservable{
     
 
 
-    public Guest(String username, String password, LocalDate dob, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) {
+    public Guest(String username, String password, LocalDate dob, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) throws Exception {
         super(username, password, dob);
         setRole(UserType.GUEST);     // Set the user type to GUEST
         this.balance = 0.0; // Initialize balance to 0.0 for new guests
