@@ -7,27 +7,20 @@ public class Receptionist extends Staff {
 
     }
 
-    public void checkInGuest(Guest guest , Room room) {
-        System.out.println("Checking in guest: " + guest.getUserName());
-        if (room.isAvailable()) {
-            System.out.println("Room assigned: " + room.getRoomNumber() + " to guest: " + guest.getUserName());
-            room.setAvailable(false); // Mark the room as occupied
-        } 
-        else {
-            System.out.println("Room " + room.getRoomNumber() + " is not available.");
-            // Exit the method if the room is not available
+    public boolean checkInGuest(Reservation reservation) {
+        if (reservation.getStatus() == enumerations.ReservationStatus.CONFIRMED ) {
+            reservation.getRoom().setAvailable(false);
+            return true;
         }
-        
+        return false;
     }
 
-    public void checkOutGuest(Guest guest, Room room) {
-        
-        System.out.println("Checking out guest: " + guest.getUserName());
-        if (room.isAvailable()) {
-            System.out.println("Room released: " + room.getRoomNumber() + " from guest: " + guest.getUserName());
-            room.setAvailable(true); // Mark the room as available
-        } else {
-            System.out.println("Room " + room.getRoomNumber() + " is not currently occupied.");
+    public boolean checkOutGuest(Reservation reservation) {
+        if (!reservation.getRoom().isAvailable()) {
+            reservation.getRoom().setAvailable(true);
+            reservation.complete(); 
+            return true;
         }
+        return false;
     }
 }

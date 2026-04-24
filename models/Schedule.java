@@ -4,7 +4,9 @@ public class Schedule {
     private int endTime; // Assuming time is represented in 24-hour format as an integer (e.g., 900 for 9:00 AM, 1700 for 5:00 PM)
 
     public Schedule(int startTime,  int endTime) throws Exception {
-        // Validation: End time must be after start time
+        if (startTime < 0 || startTime > 2359 || endTime < 0 || endTime > 2359) {
+            throw new Exception("Error: Time must be between 0000 and 2359.");
+        }
         if ( endTime <= startTime) {
             throw new Exception("Error: End time cannot be before start time.");
         }

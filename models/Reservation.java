@@ -10,7 +10,6 @@ import enumerations.ReservationStatus;
 public class Reservation {
 
     private static int idCounter = 1;
-    private RoomType roomType;
     private int reservationId;
     private Guest guest;
     private Room room;
@@ -68,7 +67,7 @@ public class Reservation {
     }
 
     public double calculateTotalCost() {
-        return getNumberOfNights() *  roomType.getBasePricePerNight();
+        return getNumberOfNights() *  this.room.getRoomType().getBasePricePerNight();
     }
 
     public void confirm() {
@@ -87,6 +86,13 @@ public class Reservation {
     }
 
     public void complete() {
+        if(status == ReservationStatus.COMPLETED) {
+            return; // Already completed, no action needed
+        }
+        if(status == ReservationStatus.CANCELLED) {
+            throw new IllegalStateException("Cannot complete a cancelled reservation.");
+        }
+
         if (status != ReservationStatus.CONFIRMED) {
             throw new IllegalStateException("Only CONFIRMED reservations can be completed. Current status: " + status);
         }

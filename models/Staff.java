@@ -27,4 +27,18 @@ public class Staff extends User {
     public StaffRole getStaffRole() {
         return role;
     }
+
+    public java.util.ArrayList<Guest> viewAllGuests() {
+        return Database.getAllGuests();
+    }
+
+    public java.util.ArrayList<Room> viewAllRooms() {
+        return Database.getAllRooms();
+    }
+
+    public java.util.ArrayList<Reservation> viewAllReservations() {
+        return Database.getAllReservations();
+    }
+
+
 }
