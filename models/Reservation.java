@@ -1,13 +1,15 @@
+package models;
 import exceptions.RoomNotAvailableException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 // --- Reservation.java ---
 
+import enumerations.ReservationStatus;
+
 public class Reservation {
 
     private static int idCounter = 1;
-    private RoomType roomType;
     private int reservationId;
     private Guest guest;
     private Room room;
@@ -26,6 +28,7 @@ public class Reservation {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.status = ReservationStatus.PENDING;
+        
     }
 
     // --- Validation ---
@@ -64,7 +67,7 @@ public class Reservation {
     }
 
     public double calculateTotalCost() {
-        return getNumberOfNights() *  roomType.getBasePricePerNight();
+        return getNumberOfNights() *  this.room.getRoomType().getBasePricePerNight();
     }
 
     public void confirm() {
@@ -83,6 +86,13 @@ public class Reservation {
     }
 
     public void complete() {
+        if(status == ReservationStatus.COMPLETED) {
+            return; // Already completed, no action needed
+        }
+        if(status == ReservationStatus.CANCELLED) {
+            throw new IllegalStateException("Cannot complete a cancelled reservation.");
+        }
+
         if (status != ReservationStatus.CONFIRMED) {
             throw new IllegalStateException("Only CONFIRMED reservations can be completed. Current status: " + status);
         }
@@ -124,7 +134,7 @@ public class Reservation {
     public String toString() {
         return "Reservation{" +
                 "id=" + reservationId +
-                ", guest=" + guest.getUsername() +
+                ", guest=" + guest.getUserName() +
                 ", room=" + room.getRoomNumber() +
                 ", checkIn=" + checkInDate +
                 ", checkOut=" + checkOutDate +

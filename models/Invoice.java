@@ -1,3 +1,4 @@
+package models;
 // Invoice.java
 import exceptions.InvalidPaymentException;
 
@@ -6,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Invoice {
+import enumerations.PaymentMethod;
+
+public class Invoice implements interfaces.Payable {
 
     private static int idCounter = 1;
 
@@ -122,4 +125,11 @@ public class Invoice {
                 ", paid=" + isPaid +
                 '}';
     }
+
+    @Override
+    public double calculateTotal() {
+        return totalAmount;
+    }
+
+    
 }

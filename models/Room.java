@@ -1,4 +1,5 @@
-public class Room {
+package models;
+public class Room implements interfaces.Bookable {
     private int roomNumber;
     private int floor;
     private boolean isAvailable;
@@ -20,7 +21,6 @@ public class Room {
 
     public int getRoomNumber() { return roomNumber; }
     public int getFloor() { return floor; }
-    public boolean isAvailable() { return isAvailable; }
     public RoomType getRoomType() { return roomType; }
 
     public void setAvailable(boolean available) {
@@ -47,5 +47,26 @@ public class Room {
                 "\n  Type: " + roomType.getTypeName() +
                 "\n  Price per Night: " + roomType.getBasePricePerNight() +
                 "\n  Available: " + isAvailable;
+    }
+
+
+    @Override
+    public boolean isAvailable() {
+        return this.isAvailable; // Returns your boolean attribute
+    }
+
+    @Override
+    public boolean book() {
+        if (this.isAvailable) {
+            this.isAvailable = false;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean release() {
+        this.isAvailable = true;
+        return true;
     }
 }

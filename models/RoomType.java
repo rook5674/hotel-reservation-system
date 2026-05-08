@@ -1,3 +1,4 @@
+package models;
 import interfaces.Budgetable;
 
 public class RoomType implements Budgetable {
