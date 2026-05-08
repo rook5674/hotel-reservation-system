@@ -1,4 +1,5 @@
-
+package models;
+import enumerations.AmenityType;
 
 public class Amenity {
     public void display() {
