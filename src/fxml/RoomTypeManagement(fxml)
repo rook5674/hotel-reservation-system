@@ -1,0 +1,80 @@
+.root-pane {
+    -fx-background-color: #f0f4f8;
+    -fx-font-family: "Arial";
+}
+
+.card-pane {
+    -fx-background-color: white;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 16;
+}
+
+.title-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.section-label {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.field-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #333333;
+}
+
+.text-field, .combo-box {
+    -fx-pref-height: 32;
+    -fx-font-size: 13px;
+}
+
+.list-view {
+    -fx-font-size: 13px;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1;
+}
+
+.button {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 14 8 14;
+    -fx-cursor: hand;
+}
+
+.primary-button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+.secondary-button {
+    -fx-background-color: #ecf0f1;
+    -fx-text-fill: #2c3e50;
+}
+
+.danger-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+}
+
+.feedback-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #555555;
+}
+
+.error-text {
+    -fx-text-fill: #e74c3c;
+}
+
+.success-text {
+    -fx-text-fill: #27ae60;
+}
+
+.info-text {
+    -fx-text-fill: #2980b9;
+}
