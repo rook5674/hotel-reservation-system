@@ -1,0 +1,10 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "java.compile.nullAnalysis.mode": "automatic",
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java"
+    },
+    "java.debug.settings.onBuildFailureProceed": true
+}
