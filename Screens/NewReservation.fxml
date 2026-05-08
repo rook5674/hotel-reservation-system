@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Screens.NewReservationController"
+            prefWidth="520" prefHeight="480">
+
+    <top>
+        <VBox spacing="4" style="-fx-padding: 24 28 12 28;">
+            <Label text="New Reservation" styleClass="title-label"/>
+            <Label text="Fill in the details below to book a room."
+                   style="-fx-text-fill: #888888;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox styleClass="card" spacing="14"
+              style="-fx-padding: 24 28 24 28;">
+
+            <Label text="Room Number"/>
+            <ComboBox fx:id="roomComboBox" promptText="Select a room"
+                      maxWidth="Infinity"/>
+
+            <Label text="Check-in Date"/>
+            <DatePicker fx:id="checkInPicker" maxWidth="Infinity"/>
+
+            <Label text="Check-out Date"/>
+            <DatePicker fx:id="checkOutPicker" maxWidth="Infinity"/>
+
+            <Label fx:id="nightsLabel"
+                   text="Nights: —"
+                   style="-fx-text-fill: #888888; -fx-font-size: 12px;"/>
+
+            <Label fx:id="errorLabel" styleClass="error-label" text=""/>
+
+            <HBox spacing="10" style="-fx-padding: 8 0 0 0;">
+                <Button text="Confirm Reservation"
+                        styleClass="btn-primary"
+                        onAction="#handleConfirm"
+                        HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="Cancel"
+                        styleClass="btn-danger"
+                        onAction="#handleCancel"/>
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

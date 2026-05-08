@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Screens.CheckoutController"
+            prefWidth="520" prefHeight="520">
+
+    <top>
+        <VBox spacing="4" style="-fx-padding: 24 28 12 28;">
+            <Label text="Checkout &amp; Payment" styleClass="title-label"/>
+            <Label text="Review your invoice and complete payment."
+                   style="-fx-text-fill: #888888;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="14" style="-fx-padding: 0 28 24 28;">
+
+            <Label text="Select Reservation"/>
+            <ComboBox fx:id="reservationComboBox"
+                      promptText="Choose a confirmed reservation"
+                      maxWidth="Infinity"/>
+
+            <!-- Invoice summary box -->
+            <VBox fx:id="invoiceBox" styleClass="invoice-box"
+                  spacing="8" visible="false">
+                <Label text="Invoice Summary"
+                       style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
+                <Separator/>
+                <Label fx:id="invoiceRoom"   text="Room: —"/>
+                <Label fx:id="invoiceDates"  text="Dates: —"/>
+                <Label fx:id="invoiceNights" text="Nights: —"/>
+                <Separator/>
+                <Label fx:id="invoiceTotal"
+                       text="Total: —"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold;
+                              -fx-text-fill: #ffffff;"/>
+            </VBox>
+
+            <Label text="Payment Method"/>
+            <VBox fx:id="paymentBox" spacing="8" visible="false">
+                <CheckBox fx:id="cashCheck"       text="Cash"
+                          style="-fx-text-fill: #e0e0e0;"/>
+                <CheckBox fx:id="creditCardCheck" text="Credit Card"
+                          style="-fx-text-fill: #e0e0e0;"/>
+                <CheckBox fx:id="onlineCheck"     text="Online"
+                          style="-fx-text-fill: #e0e0e0;"/>
+            </VBox>
+
+            <Label fx:id="errorLabel" styleClass="error-label" text=""/>
+
+            <Button text="Confirm Payment"
+                    styleClass="btn-success"
+                    onAction="#handlePayment"
+                    maxWidth="Infinity"/>
+        </VBox>
+    </center>
+</BorderPane>
