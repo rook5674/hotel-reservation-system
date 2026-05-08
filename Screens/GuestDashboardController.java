@@ -53,9 +53,11 @@ public class GuestDashboardController {
 
     @FXML
     public void handleLogout() {
+
     }
 
     @FXML
     public void handleBookNewRoom() {
+        
     }
 }
