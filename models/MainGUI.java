@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MainUGI extends Application {
+public class MainGUI extends Application {
     
     public static Stage primaryStage;
 
