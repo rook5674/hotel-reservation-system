@@ -1,14 +1,13 @@
 package models;
+
 import exceptions.RoomNotAvailableException;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-// --- Reservation.java ---
 
 import enumerations.ReservationStatus;
 
 public class Reservation {
-
     private static int idCounter = 1;
     private int reservationId;
     private Guest guest;
@@ -28,10 +27,7 @@ public class Reservation {
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
         this.status = ReservationStatus.PENDING;
-        
     }
-
-    // --- Validation ---
 
     private void validateGuest(Guest guest) {
         if (guest == null) {
@@ -60,14 +56,12 @@ public class Reservation {
         }
     }
 
-    // --- Business Logic ---
-
     public long getNumberOfNights() {
         return ChronoUnit.DAYS.between(checkInDate, checkOutDate);
     }
 
     public double calculateTotalCost() {
-        return getNumberOfNights() *  this.room.getRoomType().getBasePricePerNight();
+        return getNumberOfNights() * room.getRoomType().getBasePricePerNight();
     }
 
     public void confirm() {
@@ -86,27 +80,22 @@ public class Reservation {
     }
 
     public void complete() {
-        if(status == ReservationStatus.COMPLETED) {
-            return; // Already completed, no action needed
+        if (status == ReservationStatus.COMPLETED) {
+            return;
         }
-        if(status == ReservationStatus.CANCELLED) {
+        if (status == ReservationStatus.CANCELLED) {
             throw new IllegalStateException("Cannot complete a cancelled reservation.");
         }
-
         if (status != ReservationStatus.CONFIRMED) {
             throw new IllegalStateException("Only CONFIRMED reservations can be completed. Current status: " + status);
         }
         this.status = ReservationStatus.COMPLETED;
+        this.room.setAvailable(true);
     }
 
-    // --- Getters & Setters ---
-
     public int getReservationId() { return reservationId; }
-
     public Guest getGuest() { return guest; }
-
     public Room getRoom() { return room; }
-
     public LocalDate getCheckInDate() { return checkInDate; }
 
     public void setCheckInDate(LocalDate checkInDate) {
@@ -143,5 +132,4 @@ public class Reservation {
                 ", status=" + status +
                 '}';
     }
-
 }

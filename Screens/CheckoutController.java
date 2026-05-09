@@ -2,11 +2,12 @@ package Screens;
 
 import enumerations.PaymentMethod;
 import enumerations.ReservationStatus;
-import exceptions.InvalidPaymentException;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
-import models.*;
+import models.Database;
+import models.Guest;
+import models.Reservation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +30,15 @@ public class CheckoutController {
     @FXML
     public void initialize() {
         loggedInGuest = SessionContext.currentGuest;
+
         if (loggedInGuest == null) {
             ScreenNavigator.goTo("RoleSelection.fxml");
             return;
         }
 
-        reservationComboBox.setCellFactory(lv -> reservationCell());
+        reservationComboBox.setCellFactory(listView -> reservationCell());
         reservationComboBox.setButtonCell(reservationCell());
-        reservationComboBox.setOnAction(e -> loadInvoicePreview());
+        reservationComboBox.setOnAction(event -> loadInvoicePreview());
 
         hidePaymentSections();
         loadConfirmedReservations();
@@ -51,10 +53,15 @@ public class CheckoutController {
     private ListCell<Reservation> reservationCell() {
         return new ListCell<>() {
             @Override
-            protected void updateItem(Reservation r, boolean empty) {
-                super.updateItem(r, empty);
-                setText(empty || r == null ? null :
-                        "Reservation #" + r.getReservationId() + " - Room " + r.getRoom().getRoomNumber());
+            protected void updateItem(Reservation reservation, boolean empty) {
+                super.updateItem(reservation, empty);
+
+                if (empty || reservation == null) {
+                    setText(null);
+                } else {
+                    setText("Reservation #" + reservation.getReservationId()
+                            + " - Room " + reservation.getRoom().getRoomNumber());
+                }
             }
         };
     }
@@ -62,10 +69,14 @@ public class CheckoutController {
     private void loadConfirmedReservations() {
         reservationComboBox.getItems().clear();
 
-        for (Reservation r : Database.getAllReservations()) {
-            boolean isOwner = r.getGuest().getUserName().equals(loggedInGuest.getUserName());
-            if (isOwner && r.getStatus() == ReservationStatus.CONFIRMED) {
-                reservationComboBox.getItems().add(r);
+        synchronized (Database.class) {
+            for (Reservation reservation : Database.getAllReservations()) {
+                boolean isOwner = reservation.getGuest().equals(loggedInGuest);
+                boolean isConfirmed = reservation.getStatus() == ReservationStatus.CONFIRMED;
+
+                if (isOwner && isConfirmed) {
+                    reservationComboBox.getItems().add(reservation);
+                }
             }
         }
 
@@ -76,6 +87,109 @@ public class CheckoutController {
         }
 
         hidePaymentSections();
+    }
+
+    private void loadInvoicePreview() {
+        Reservation reservation = reservationComboBox.getValue();
+
+        if (reservation == null) {
+            hidePaymentSections();
+            return;
+        }
+
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
+            hidePaymentSections();
+            errorLabel.setText("Only CONFIRMED reservations can be checked out.");
+            return;
+        }
+
+        double totalCost = reservation.calculateTotalCost();
+
+        invoiceRoom.setText("Room: " + reservation.getRoom().getRoomNumber()
+                + " (" + reservation.getRoom().getRoomType().getTypeName() + ")");
+        invoiceDates.setText("Dates: " + reservation.getCheckInDate()
+                + " → " + reservation.getCheckOutDate());
+        invoiceNights.setText("Nights: " + reservation.getNumberOfNights());
+        invoiceTotal.setText("Total: $" + String.format("%.2f", totalCost));
+
+        showPaymentSections();
+        errorLabel.setText("Wallet Balance: $" + String.format("%.2f", loggedInGuest.getBalance()));
+    }
+
+    @FXML
+    public void handlePayment() {
+        Reservation selectedReservation = reservationComboBox.getValue();
+
+        if (selectedReservation == null) {
+            errorLabel.setText("Please select a reservation first.");
+            return;
+        }
+
+        if (selectedReservation.getStatus() != ReservationStatus.CONFIRMED) {
+            errorLabel.setText("Only CONFIRMED reservations can be paid.");
+            return;
+        }
+
+        List<PaymentMethod> methods = new ArrayList<>();
+
+        if (cashCheck.isSelected()) {
+            methods.add(PaymentMethod.CASH);
+        }
+
+        if (creditCardCheck.isSelected()) {
+            methods.add(PaymentMethod.CREDIT_CARD);
+        }
+
+        if (onlineCheck.isSelected()) {
+            methods.add(PaymentMethod.ONLINE);
+        }
+
+        if (methods.isEmpty()) {
+            errorLabel.setText("Please select at least one payment method.");
+            return;
+        }
+
+        double totalCost = selectedReservation.calculateTotalCost();
+
+        if (loggedInGuest.getBalance() < totalCost) {
+            errorLabel.setText("Insufficient wallet balance. Required: $"
+                    + String.format("%.2f", totalCost)
+                    + ", available: $"
+                    + String.format("%.2f", loggedInGuest.getBalance()));
+            return;
+        }
+
+        try {
+            boolean paid;
+
+            synchronized (Database.class) {
+                paid = loggedInGuest.checkoutAndPay(selectedReservation, methods);
+            }
+
+            if (!paid) {
+                errorLabel.setText("Payment failed. Check reservation status, ownership, or wallet balance.");
+                return;
+            }
+
+            UiUtil.showInfo(
+                    "Payment Successful",
+                    "Payment successful!"
+                            + "\nRoom " + selectedReservation.getRoom().getRoomNumber()
+                            + "\nTotal paid: $" + String.format("%.2f", totalCost)
+                            + "\nRemaining balance: $" + String.format("%.2f", loggedInGuest.getBalance())
+            );
+
+            reservationComboBox.setValue(null);
+            cashCheck.setSelected(false);
+            creditCardCheck.setSelected(false);
+            onlineCheck.setSelected(false);
+            errorLabel.setText("");
+
+            loadConfirmedReservations();
+
+        } catch (Exception e) {
+            errorLabel.setText(e.getMessage());
+        }
     }
 
     private void hidePaymentSections() {
@@ -90,72 +204,6 @@ public class CheckoutController {
         invoiceBox.setManaged(true);
         paymentBox.setVisible(true);
         paymentBox.setManaged(true);
-    }
-
-    private void loadInvoicePreview() {
-        Reservation r = reservationComboBox.getValue();
-        if (r == null) {
-            hidePaymentSections();
-            return;
-        }
-
-        if (r.getStatus() != ReservationStatus.CONFIRMED) {
-            hidePaymentSections();
-            errorLabel.setText("Only CONFIRMED reservations can be checked out.");
-            return;
-        }
-
-        invoiceRoom.setText("Room: " + r.getRoom().getRoomNumber()
-                + " (" + r.getRoom().getRoomType().getTypeName() + ")");
-        invoiceDates.setText("Dates: " + r.getCheckInDate() + " → " + r.getCheckOutDate());
-        invoiceNights.setText("Nights: " + r.getNumberOfNights());
-        invoiceTotal.setText("Total: $" + String.format("%.2f", r.calculateTotalCost()));
-
-        showPaymentSections();
-        errorLabel.setText("");
-    }
-
-    @FXML
-    public void handlePayment() {
-        Reservation selectedReservation = reservationComboBox.getValue();
-        if (selectedReservation == null) {
-            errorLabel.setText("Please select a reservation first.");
-            return;
-        }
-
-        if (selectedReservation.getStatus() != ReservationStatus.CONFIRMED) {
-            errorLabel.setText("Only CONFIRMED reservations can be paid.");
-            return;
-        }
-
-        List<PaymentMethod> methods = new ArrayList<>();
-        if (cashCheck.isSelected()) methods.add(PaymentMethod.CASH);
-        if (creditCardCheck.isSelected()) methods.add(PaymentMethod.CREDIT_CARD);
-        if (onlineCheck.isSelected()) methods.add(PaymentMethod.ONLINE);
-
-        if (methods.isEmpty()) {
-            errorLabel.setText("Please select at least one payment method.");
-            return;
-        }
-
-        try {
-            Invoice invoice = Database.createAndAddInvoice(selectedReservation);
-            invoice.pay(methods);
-
-            UiUtil.showInfo("Payment Successful",
-                    "Payment successful!\nRoom " + invoice.getReservation().getRoom().getRoomNumber()
-                            + "\nTotal paid: $" + String.format("%.2f", invoice.getTotalAmount()));
-
-            reservationComboBox.setValue(null);
-            cashCheck.setSelected(false);
-            creditCardCheck.setSelected(false);
-            onlineCheck.setSelected(false);
-            errorLabel.setText("");
-            loadConfirmedReservations();
-
-        } catch (InvalidPaymentException | IllegalStateException e) {
-            errorLabel.setText(e.getMessage());
-        }
     }
 
     @FXML

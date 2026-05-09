@@ -55,7 +55,6 @@ public class RoomBrowsingController {
         startRoomAvailabilityThread();
     }
 
-
     private void startRoomAvailabilityThread() {
         keepRefreshingRooms = true;
 
@@ -81,8 +80,7 @@ public class RoomBrowsingController {
                             public void run() {
                                 displayRoomsFromSnapshot(
                                         snapshot,
-                                        "Auto-refresh #" + currentRefreshNumber
-                                                + " by " + workerThreadName
+                                        "Auto-refresh #" + currentRefreshNumber + " by " + workerThreadName
                                 );
                             }
                         });
@@ -142,10 +140,7 @@ public class RoomBrowsingController {
             }
         }
 
-        double guestBalance = SessionContext.currentGuest.getBalance(
-                SessionContext.currentGuest.getUserName(),
-                SessionContext.currentPassword
-        );
+        double guestBalance = SessionContext.currentGuest.getBalance();
 
         ArrayList<Room> filtered = new ArrayList<>();
 

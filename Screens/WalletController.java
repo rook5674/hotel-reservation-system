@@ -16,33 +16,23 @@ public class WalletController {
     private void initialize() {
         guest = SessionContext.currentGuest;
         if (guest == null) {
-            ScreenNavigator.goTo("Login.fxml");
+            ScreenNavigator.goTo("RoleSelection.fxml");
             return;
         }
         refreshBalance();
     }
 
     private void refreshBalance() {
-        double balance = guest.getBalance(guest.getUserName(), SessionContext.currentPassword);
-        balanceLabel.setText("Current Balance: $" + String.format("%.2f", balance));
+        balanceLabel.setText("Current Balance: $" + String.format("%.2f", guest.getBalance()));
     }
 
     @FXML
     private void handleUpdateBalance() {
         try {
             double newBalance = UiUtil.parseDouble(newBalanceField.getText(), "Balance");
-            if (newBalance < 0) {
-                statusLabel.setText("Balance cannot be negative.");
-                return;
-            }
-
-            boolean updated = guest.setBalance(guest.getUserName(), SessionContext.currentPassword, newBalance);
-            if (updated) {
-                refreshBalance();
-                statusLabel.setText("Balance updated successfully.");
-            } else {
-                statusLabel.setText("Could not update balance. Please log in again.");
-            }
+            guest.setBalance(newBalance);
+            refreshBalance();
+            statusLabel.setText("Balance updated successfully.");
         } catch (Exception e) {
             statusLabel.setText(e.getMessage());
         }

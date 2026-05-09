@@ -19,24 +19,34 @@
 
     <center>
         <StackPane>
-            <padding><Insets top="26" right="26" bottom="26" left="26"/></padding>
+            <padding>
+                <Insets top="26" right="26" bottom="26" left="26"/>
+            </padding>
+
             <VBox maxWidth="560" spacing="18" alignment="CENTER" styleClass="retro-card">
                 <Label text="GUEST BALANCE" styleClass="retro-screen-title"/>
+
                 <VBox spacing="8" styleClass="retro-terminal" maxWidth="Infinity">
                     <Label text="CURRENT LEDGER BALANCE" styleClass="retro-terminal-label"/>
-                    <Label fx:id="balanceLabel" text="$0.00" styleClass="retro-terminal-label"/>
+                    <Label fx:id="balanceLabel" text="0.00" styleClass="retro-terminal-label"/>
                 </VBox>
-                <GridPane maxWidth="Infinity" styleClass="form-grid">
 
+                <GridPane maxWidth="Infinity" styleClass="form-grid">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="34"/>
                         <ColumnConstraints percentWidth="66" hgrow="ALWAYS"/>
                     </columnConstraints>
 
                     <Label text="NEW BALANCE" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-                    <TextField fx:id="newBalanceField" promptText="e.g. 1500" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                    <TextField fx:id="newBalanceField"
+                               promptText="e.g. 1500"
+                               GridPane.rowIndex="0"
+                               GridPane.columnIndex="1"
+                               maxWidth="Infinity"/>
                 </GridPane>
+
                 <Label fx:id="statusLabel" text="" styleClass="retro-status" wrapText="true"/>
+
                 <HBox spacing="10" alignment="CENTER_RIGHT">
                     <Button text="UPDATE BALANCE" onAction="#handleUpdateBalance" styleClass="primary-button"/>
                     <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>

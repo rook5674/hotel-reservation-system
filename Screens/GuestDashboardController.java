@@ -34,23 +34,20 @@ public class GuestDashboardController {
             return;
         }
 
-        String username = currentGuest.getUserName();
-        String password = SessionContext.currentPassword;
-
-        welcomeLabel.setText("Welcome back, " + username + "!");
-        balanceLabel.setText("Current Balance: $" + String.format("%.2f", currentGuest.getBalance(username, password)));
+        welcomeLabel.setText("Welcome back, " + currentGuest.getUserName() + "!");
+        balanceLabel.setText("Current Balance: $" + String.format("%.2f", currentGuest.getBalance()));
         profileLabel.setText(
-                "Address: " + currentGuest.getAddress(username, password) +
-                "\nGender: " + currentGuest.getGender(username, password) +
-                "\n" + currentGuest.getRoomPreferences(username, password)
+                "Address: " + currentGuest.getAddress() +
+                "\nGender: " + currentGuest.getGender() +
+                "\n" + currentGuest.getRoomPreferences()
         );
 
         loadReservationsTable();
     }
 
     private void loadReservationsTable() {
-        colRoomNumber.setCellValueFactory(c ->
-                new SimpleIntegerProperty(c.getValue().getRoom().getRoomNumber()).asObject()
+        colRoomNumber.setCellValueFactory(cellData ->
+                new SimpleIntegerProperty(cellData.getValue().getRoom().getRoomNumber()).asObject()
         );
         colCheckIn.setCellValueFactory(new PropertyValueFactory<>("checkInDate"));
         colCheckOut.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));

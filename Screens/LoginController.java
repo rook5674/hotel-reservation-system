@@ -44,34 +44,39 @@ public class LoginController {
     @FXML
     private void handleLogin() {
         statusLabel.setText("");
+        statusLabel.setStyle("");
 
         String username = usernameField.getText() == null ? "" : usernameField.getText().trim();
         String password = passwordField.getText() == null ? "" : passwordField.getText();
 
         if (username.isBlank() || password.isBlank()) {
-            statusLabel.setText("Please enter username and password.");
+            showLoginError("Please enter username and password.");
             return;
         }
 
         if (SessionContext.isGuestLoginMode()) {
             loginAsGuest(username, password);
-        } else if (SessionContext.isStaffLoginMode()) {
-            loginAsStaff(username, password);
-        } else {
-            statusLabel.setText("Please choose Guest or Staff access first.");
+            return;
         }
+
+        if (SessionContext.isStaffLoginMode()) {
+            loginAsStaff(username, password);
+            return;
+        }
+
+        showLoginError("Please choose Guest or Staff access first.");
     }
 
     private void loginAsGuest(String username, String password) {
         Guest guest = Database.getGuestByUsername(username);
 
         if (guest == null) {
-            statusLabel.setText("Guest username not found. Use Staff Access for admin/receptionist accounts.");
+            showLoginError("No guest account found for username: " + username);
             return;
         }
 
         if (!guest.login(username, password)) {
-            statusLabel.setText("Invalid guest password.");
+            showLoginError("Incorrect password for username: " + username);
             return;
         }
 
@@ -83,12 +88,12 @@ public class LoginController {
         Staff staff = Database.getStaffByUsername(username);
 
         if (staff == null) {
-            statusLabel.setText("Staff username not found. Use Guest Access for guest accounts.");
+            showLoginError("No staff account found for username: " + username);
             return;
         }
 
         if (!staff.login(username, password)) {
-            statusLabel.setText("Invalid staff password.");
+            showLoginError("Incorrect password for username: " + username);
             return;
         }
 
@@ -101,10 +106,15 @@ public class LoginController {
         }
     }
 
+    private void showLoginError(String message) {
+        statusLabel.setText(message);
+        statusLabel.setStyle("-fx-text-fill: red;");
+    }
+
     @FXML
     private void handleRegister() {
         if (!SessionContext.isGuestLoginMode()) {
-            statusLabel.setText("Guest registration is only available from Guest Access.");
+            showLoginError("Guest registration is only available from Guest Access.");
             return;
         }
         ScreenNavigator.goTo("GuestRegistration.fxml");

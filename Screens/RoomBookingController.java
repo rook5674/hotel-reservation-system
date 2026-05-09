@@ -21,7 +21,7 @@ public class RoomBookingController {
     private void initialize() {
         loggedInGuest = SessionContext.currentGuest;
         if (loggedInGuest == null) {
-            ScreenNavigator.goTo("Login.fxml");
+            ScreenNavigator.goTo("RoleSelection.fxml");
             return;
         }
 
@@ -86,12 +86,17 @@ public class RoomBookingController {
                 return;
             }
 
-            Reservation reservation = Database.createAndAddReservation(loggedInGuest, room, in, out);
-            reservation.confirm();
-            room.setAvailable(false);
+            boolean reserved;
+            synchronized (Database.class) {
+                reserved = loggedInGuest.makeReservation(room, in, out);
+            }
 
-            UiUtil.showInfo("Reservation Confirmed",
-                    "Reservation #" + reservation.getReservationId() + " confirmed for Room " + room.getRoomNumber() + ".");
+            if (!reserved) {
+                statusLabel.setText("Room is no longer available.");
+                return;
+            }
+
+            UiUtil.showInfo("Reservation Confirmed", "Reservation confirmed for Room " + room.getRoomNumber() + ".");
             SessionContext.selectedRoom = null;
             ScreenNavigator.goTo("MyReservations.fxml");
 

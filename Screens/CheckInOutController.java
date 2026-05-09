@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import models.*;
 
+import java.util.ArrayList;
+
 public class CheckInOutController {
     @FXML private TableView<Reservation> reservationTable;
     @FXML private TableColumn<Reservation, Integer> idCol;
@@ -20,7 +22,7 @@ public class CheckInOutController {
     @FXML
     private void initialize() {
         if (!(SessionContext.currentStaff instanceof Receptionist)) {
-            ScreenNavigator.goTo("Login.fxml");
+            ScreenNavigator.goTo("RoleSelection.fxml");
             return;
         }
 
@@ -43,12 +45,20 @@ public class CheckInOutController {
             return;
         }
 
-        Receptionist receptionist = (Receptionist) SessionContext.currentStaff;
-        if (receptionist.checkInGuest(selected)) {
+        try {
+            Receptionist receptionist = (Receptionist) SessionContext.currentStaff;
+            boolean checkedIn;
+
+            synchronized (Database.class) {
+                checkedIn = receptionist.checkInGuest(selected);
+            }
+
             refreshReservations();
-            statusLabel.setText("Guest checked in.");
-        } else {
-            statusLabel.setText("Only CONFIRMED reservations can be checked in.");
+            statusLabel.setText(checkedIn
+                    ? "Guest checked in."
+                    : "Only CONFIRMED reservations can be checked in.");
+        } catch (Exception e) {
+            statusLabel.setText(e.getMessage());
         }
     }
 
@@ -62,12 +72,16 @@ public class CheckInOutController {
 
         try {
             Receptionist receptionist = (Receptionist) SessionContext.currentStaff;
-            if (receptionist.checkOutGuest(selected)) {
-                refreshReservations();
-                statusLabel.setText("Guest checked out and reservation completed.");
-            } else {
-                statusLabel.setText("Room is already available, so checkout cannot be completed.");
+            boolean checkedOut;
+
+            synchronized (Database.class) {
+                checkedOut = receptionist.checkOutGuest(selected);
             }
+
+            refreshReservations();
+            statusLabel.setText(checkedOut
+                    ? "Guest checked out and reservation completed."
+                    : "Room is already available, so checkout cannot be completed.");
         } catch (Exception e) {
             statusLabel.setText(e.getMessage());
         }
@@ -75,7 +89,11 @@ public class CheckInOutController {
 
     @FXML
     private void refreshReservations() {
-        reservationTable.setItems(FXCollections.observableArrayList(Database.getAllReservations()));
+        ArrayList<Reservation> snapshot;
+        synchronized (Database.class) {
+            snapshot = new ArrayList<>(Database.getAllReservations());
+        }
+        reservationTable.setItems(FXCollections.observableArrayList(snapshot));
     }
 
     @FXML

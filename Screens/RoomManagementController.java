@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import models.*;
 
+import java.util.ArrayList;
+
 public class RoomManagementController {
     @FXML private TextField roomNumberField;
     @FXML private TextField floorField;
@@ -22,7 +24,7 @@ public class RoomManagementController {
     @FXML
     private void initialize() {
         if (!(SessionContext.currentStaff instanceof Admin)) {
-            ScreenNavigator.goTo("Login.fxml");
+            ScreenNavigator.goTo("RoleSelection.fxml");
             return;
         }
 
@@ -39,6 +41,7 @@ public class RoomManagementController {
                 floorField.setText(String.valueOf(room.getFloor()));
                 roomTypeComboBox.setValue(room.getRoomType());
                 availableCheckBox.setSelected(room.isAvailable());
+                statusLabel.setText("Selected Room " + room.getRoomNumber() + ". Change the checkbox, then click UPDATE AVAILABILITY.");
             }
         });
 
@@ -57,13 +60,11 @@ public class RoomManagementController {
                 return;
             }
 
-            if (Database.getRoomByNumber(roomNumber) != null) {
-                statusLabel.setText("Room number already exists.");
-                return;
+            synchronized (Database.class) {
+                Room room = Database.createAndAddRoom(roomNumber, floor, type);
+                room.setAvailable(availableCheckBox.isSelected());
             }
 
-            Room room = Database.createAndAddRoom(roomNumber, floor, type);
-            room.setAvailable(availableCheckBox.isSelected());
             refreshRooms();
             statusLabel.setText("Room created successfully.");
         } catch (Exception e) {
@@ -74,12 +75,25 @@ public class RoomManagementController {
     @FXML
     private void handleUpdateAvailability() {
         try {
-            int roomNumber = UiUtil.parseInt(roomNumberField.getText(), "Room number");
+            Room selected = roomsTable.getSelectionModel().getSelectedItem();
+
+
+            int roomNumber = selected != null
+                    ? selected.getRoomNumber()
+                    : UiUtil.parseInt(roomNumberField.getText(), "Room number");
+
+            boolean newAvailability = availableCheckBox.isSelected();
             Admin admin = (Admin) SessionContext.currentStaff;
 
-            if (admin.updateRoomAvailability(roomNumber, availableCheckBox.isSelected())) {
+            boolean updated;
+            synchronized (Database.class) {
+                updated = admin.updateRoomAvailability(roomNumber, newAvailability);
+            }
+
+            if (updated) {
                 refreshRooms();
-                statusLabel.setText("Room availability updated.");
+                reselectRoom(roomNumber);
+                statusLabel.setText("Room " + roomNumber + " availability updated to " + (newAvailability ? "Available" : "Unavailable") + ".");
             } else {
                 statusLabel.setText("Room not found.");
             }
@@ -92,11 +106,20 @@ public class RoomManagementController {
     private void handleDelete() {
         try {
             Room selected = roomsTable.getSelectionModel().getSelectedItem();
-            int roomNumber = selected != null ? selected.getRoomNumber() : UiUtil.parseInt(roomNumberField.getText(), "Room number");
+            int roomNumber = selected != null
+                    ? selected.getRoomNumber()
+                    : UiUtil.parseInt(roomNumberField.getText(), "Room number");
 
             Admin admin = (Admin) SessionContext.currentStaff;
-            if (admin.delete(roomNumber)) {
+            boolean deleted;
+
+            synchronized (Database.class) {
+                deleted = admin.delete(roomNumber);
+            }
+
+            if (deleted) {
                 refreshRooms();
+                clearForm();
                 statusLabel.setText("Room deleted.");
             } else {
                 statusLabel.setText("Room not found.");
@@ -108,7 +131,29 @@ public class RoomManagementController {
 
     @FXML
     private void refreshRooms() {
-        roomsTable.setItems(FXCollections.observableArrayList(Database.getAllRooms()));
+        ArrayList<Room> snapshot;
+        synchronized (Database.class) {
+            snapshot = new ArrayList<>(Database.getAllRooms());
+        }
+        roomsTable.setItems(FXCollections.observableArrayList(snapshot));
+    }
+
+    private void reselectRoom(int roomNumber) {
+        for (Room room : roomsTable.getItems()) {
+            if (room.getRoomNumber() == roomNumber) {
+                roomsTable.getSelectionModel().select(room);
+                roomsTable.scrollTo(room);
+                availableCheckBox.setSelected(room.isAvailable());
+                return;
+            }
+        }
+    }
+
+    private void clearForm() {
+        roomNumberField.clear();
+        floorField.clear();
+        roomTypeComboBox.setValue(null);
+        availableCheckBox.setSelected(false);
     }
 
     @FXML

@@ -23,17 +23,15 @@ public class ProfileSettingsController {
     private void initialize() {
         guest = SessionContext.currentGuest;
         if (guest == null) {
-            ScreenNavigator.goTo("Login.fxml");
+            ScreenNavigator.goTo("RoleSelection.fxml");
             return;
         }
 
         genderComboBox.setItems(FXCollections.observableArrayList(Gender.values()));
         roomTypeComboBox.setItems(FXCollections.observableArrayList(Database.getAllRoomTypes()));
 
-        String username = guest.getUserName();
-        String password = SessionContext.currentPassword;
-        addressField.setText(guest.getAddress(username, password));
-        genderComboBox.setValue(guest.getGender(username, password));
+        addressField.setText(guest.getAddress());
+        genderComboBox.setValue(guest.getGender());
 
         if (!Database.getAllRoomTypes().isEmpty()) {
             roomTypeComboBox.setValue(Database.getAllRoomTypes().get(0));
@@ -45,9 +43,6 @@ public class ProfileSettingsController {
     @FXML
     private void handleSave() {
         try {
-            String username = guest.getUserName();
-            String password = SessionContext.currentPassword;
-
             String address = addressField.getText().trim();
             Gender gender = genderComboBox.getValue();
             RoomType roomType = roomTypeComboBox.getValue();
@@ -59,9 +54,9 @@ public class ProfileSettingsController {
                 return;
             }
 
-            guest.setAddress(username, password, address);
-            guest.setGender(username, password, gender);
-            guest.setRoomPreferences(username, password, roomType, floor, seaViewCheckBox.isSelected(), maxPrice);
+            guest.setAddress(address);
+            guest.setGender(gender);
+            guest.setRoomPreferences(roomType, floor, seaViewCheckBox.isSelected(), maxPrice);
 
             statusLabel.setText("Profile updated successfully.");
         } catch (Exception e) {
