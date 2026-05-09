@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.RoomBrowsingController"
+            prefWidth="1100" prefHeight="700"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="ROOM BROWSING" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="AVAILABILITY BOARD" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="16" fillWidth="true" styleClass="retro-shell">
+            <VBox spacing="12" styleClass="retro-card" maxWidth="Infinity">
+                <Label text="FILTER AVAILABLE ROOMS" styleClass="retro-screen-title"/>
+                <GridPane maxWidth="Infinity" styleClass="form-grid">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="16"/>
+                        <ColumnConstraints percentWidth="20" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="16"/>
+                        <ColumnConstraints percentWidth="20" hgrow="ALWAYS"/>
+                        <ColumnConstraints percentWidth="28"/>
+                    </columnConstraints>
+                    <Label text="ROOM TYPE" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="roomTypeComboBox" promptText="Any type" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                    <Label text="AMENITY" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                    <ComboBox fx:id="amenityComboBox" promptText="Any amenity" GridPane.rowIndex="0" GridPane.columnIndex="3" maxWidth="Infinity"/>
+                    <HBox spacing="10" GridPane.rowIndex="0" GridPane.columnIndex="4">
+                        <CheckBox fx:id="availableOnlyCheckBox" text="Available"/>
+                        <CheckBox fx:id="affordableOnlyCheckBox" text="Affordable"/>
+                    </HBox>
+                    <Label text="MAX PRICE" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="maxPriceField" promptText="budget" GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                    <HBox spacing="10" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.columnSpan="2" alignment="CENTER_RIGHT">
+                        <Button text="APPLY FILTERS" onAction="#refreshRooms" styleClass="primary-button"/>
+                        <Button text="CLEAR" onAction="#handleClearFilters" styleClass="secondary-button"/>
+                        <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>
+                    </HBox>
+                </GridPane>
+                <Label fx:id="statusLabel" text="" styleClass="retro-status" wrapText="true"/>
+            </VBox>
+
+            <VBox spacing="10" styleClass="retro-card" VBox.vgrow="ALWAYS" maxWidth="Infinity" maxHeight="Infinity">
+                <Label text="ROOM AVAILABILITY LEDGER" styleClass="retro-section-title"/>
+                <TableView fx:id="roomsTable" VBox.vgrow="ALWAYS" maxWidth="Infinity" maxHeight="Infinity">
+                    <columns>
+                        <TableColumn fx:id="roomNumberCol" text="ROOM" prefWidth="100"/>
+                        <TableColumn fx:id="floorCol" text="FLOOR" prefWidth="90"/>
+                        <TableColumn fx:id="typeCol" text="TYPE" prefWidth="190"/>
+                        <TableColumn fx:id="priceCol" text="PRICE" prefWidth="110"/>
+                        <TableColumn fx:id="amenitiesCol" text="AMENITIES" prefWidth="300"/>
+                        <TableColumn fx:id="availableCol" text="AVAILABLE" prefWidth="120"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+                <HBox alignment="CENTER_RIGHT">
+                    <Button text="BOOK SELECTED ROOM" onAction="#handleBookSelected" styleClass="primary-button"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

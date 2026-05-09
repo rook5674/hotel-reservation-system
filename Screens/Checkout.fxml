@@ -1,59 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Screens.CheckoutController"
-            prefWidth="520" prefHeight="520">
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
 
     <top>
-        <VBox spacing="4" style="-fx-padding: 24 28 12 28;">
-            <Label text="Checkout &amp; Payment" styleClass="title-label"/>
-            <Label text="Review your invoice and complete payment."
-                   style="-fx-text-fill: #888888;"/>
-        </VBox>
+        <HBox styleClass="retro-topbar">
+            <Label text="CHECKOUT COUNTER" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="INVOICE PAYMENT" styleClass="retro-code"/>
+        </HBox>
     </top>
 
     <center>
-        <VBox spacing="14" style="-fx-padding: 0 28 24 28;">
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <content>
+                <VBox spacing="18" fillWidth="true" styleClass="retro-shell">
+                    <VBox spacing="12" styleClass="retro-card" maxWidth="Infinity">
+                        <Label text="SELECT CONFIRMED RESERVATION" styleClass="retro-screen-title"/>
+                        <ComboBox fx:id="reservationComboBox" promptText="Reservation waiting for checkout" maxWidth="Infinity"/>
+                    </VBox>
 
-            <Label text="Select Reservation"/>
-            <ComboBox fx:id="reservationComboBox"
-                      promptText="Choose a confirmed reservation"
-                      maxWidth="Infinity"/>
+                    <VBox fx:id="invoiceBox" spacing="10" styleClass="retro-terminal" maxWidth="Infinity">
+                        <Label text="INVOICE PREVIEW" styleClass="retro-terminal-label"/>
+                        <Label fx:id="invoiceRoom" text="Room:" styleClass="retro-terminal-label"/>
+                        <Label fx:id="invoiceDates" text="Dates:" styleClass="retro-terminal-label"/>
+                        <Label fx:id="invoiceNights" text="Nights:" styleClass="retro-terminal-label"/>
+                        <Label fx:id="invoiceTotal" text="Total:" styleClass="retro-terminal-label"/>
+                    </VBox>
 
-            <!-- Invoice summary box -->
-            <VBox fx:id="invoiceBox" styleClass="invoice-box"
-                  spacing="8" visible="false">
-                <Label text="Invoice Summary"
-                       style="-fx-font-weight: bold; -fx-text-fill: #ffffff;"/>
-                <Separator/>
-                <Label fx:id="invoiceRoom"   text="Room: —"/>
-                <Label fx:id="invoiceDates"  text="Dates: —"/>
-                <Label fx:id="invoiceNights" text="Nights: —"/>
-                <Separator/>
-                <Label fx:id="invoiceTotal"
-                       text="Total: —"
-                       style="-fx-font-size: 16px; -fx-font-weight: bold;
-                              -fx-text-fill: #ffffff;"/>
-            </VBox>
-
-            <Label text="Payment Method"/>
-            <VBox fx:id="paymentBox" spacing="8" visible="false">
-                <CheckBox fx:id="cashCheck"       text="Cash"
-                          style="-fx-text-fill: #e0e0e0;"/>
-                <CheckBox fx:id="creditCardCheck" text="Credit Card"
-                          style="-fx-text-fill: #e0e0e0;"/>
-                <CheckBox fx:id="onlineCheck"     text="Online"
-                          style="-fx-text-fill: #e0e0e0;"/>
-            </VBox>
-
-            <Label fx:id="errorLabel" styleClass="error-label" text=""/>
-
-            <Button text="Confirm Payment"
-                    styleClass="btn-success"
-                    onAction="#handlePayment"
-                    maxWidth="Infinity"/>
-        </VBox>
+                    <VBox fx:id="paymentBox" spacing="12" styleClass="retro-card" maxWidth="Infinity">
+                        <Label text="PAYMENT METHODS" styleClass="retro-section-title"/>
+                        <HBox spacing="20" alignment="CENTER_LEFT">
+                            <CheckBox fx:id="cashCheck" text="CASH"/>
+                            <CheckBox fx:id="creditCardCheck" text="CREDIT CARD"/>
+                            <CheckBox fx:id="onlineCheck" text="ONLINE"/>
+                        </HBox>
+                        <Label fx:id="errorLabel" text="" styleClass="retro-status" wrapText="true"/>
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>
+                            <Button text="CONFIRM PAYMENT" onAction="#handlePayment" styleClass="primary-button"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
     </center>
 </BorderPane>

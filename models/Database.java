@@ -184,14 +184,31 @@ public class Database{
 
 
 
-    public static Guest registerNewGuest(String username, String password, LocalDate dateOfBirth, double balance, String address, Gender gender, RoomType prefType, int prefFloor, boolean seaview , double price) throws Exception {
-        if (getGuestByUsername(username) != null || getStaffByUsername(username) != null) {
-            throw new Exception("Error: Username '" + username + "' is already taken.");
-        }
-        Guest newGuest = new Guest(username, password, dateOfBirth, address, gender, prefType, prefFloor, seaview , price);
-        guests.add(newGuest);
-        return newGuest;
+public static Guest registerNewGuest(
+        String username,
+        String password,
+        LocalDate dateOfBirth,
+        double balance,
+        String address,
+        Gender gender,
+        RoomType prefType,
+        int prefFloor,
+        boolean seaview,
+        double price
+) throws Exception {
+    if (getGuestByUsername(username) != null || getStaffByUsername(username) != null) {
+        throw new Exception("Error: Username '" + username + "' is already taken.");
     }
+
+    Guest newGuest = new Guest(username, password, dateOfBirth, address, gender, prefType, prefFloor, seaview, price);
+
+    // Important Milestone 2 fix:
+    // The Guest constructor currently initializes balance to 0.0, so apply the balance here.
+    newGuest.setBalance(username, password, balance);
+
+    guests.add(newGuest);
+    return newGuest;
+}
 
 
     public static Admin registerNewAdmin(String username, String password, LocalDate dateOfBirth, int StartTime, int EndTime) throws Exception {
@@ -296,26 +313,26 @@ public class Database{
             createAndAddRoom(402, 4, penthouse);
 
 
-            registerNewAdmin("admin_boss", "admin123", LocalDate.of(1980, 5, 20), 800, 1600); // 8 AM - 4 PM
-            registerNewReceptionist("rec_morning", "rec123", LocalDate.of(1995, 8, 15), 800, 1600); // 8 AM - 4 PM
-            registerNewReceptionist("rec_night", "rec123", LocalDate.of(1992, 11, 5), 1600, 2359); // 4 PM - Midnight
+            registerNewAdmin("admin", "admin123", LocalDate.of(1980, 5, 20), 800, 1600); 
+            registerNewReceptionist("receptionist1", "rec123", LocalDate.of(1995, 8, 15), 800, 1600); 
+            registerNewReceptionist("receptionist2", "rec123", LocalDate.of(1992, 11, 5), 1600, 2359); 
 
 
-            Guest guest1 = registerNewGuest("ahmed_99", "password123", LocalDate.of(1999, 1, 15), 500.0, 
+            Guest guest1 = registerNewGuest("ahmed", "password123", LocalDate.of(1999, 1, 15), 500.0, 
                 "New Cairo, Egypt", enumerations.Gender.MALE, suite, 3, true, 400.0);
             
-            Guest guest2 = registerNewGuest("sarah_smith", "password123", LocalDate.of(1985, 6, 30), 1200.0, 
+            Guest guest2 = registerNewGuest("seif", "password123", LocalDate.of(1985, 6, 30), 1200.0, 
                 "London, UK", enumerations.Gender.FEMALE, penthouse, 4, true, 900.0);
             
-            Guest guest3 = registerNewGuest("mohamed_ali", "password123", LocalDate.of(2001, 12, 10), 0.0, 
+            Guest guest3 = registerNewGuest("omar", "password123", LocalDate.of(2001, 12, 10), 0.0, 
                 "Alexandria, Egypt", enumerations.Gender.MALE, single, 1, false, 150.0);
 
 
 
             Room bookedSuite = getRoomByNumber(301);
             Reservation res1 = createAndAddReservation(guest1, bookedSuite, LocalDate.now(), LocalDate.now().plusDays(3));
-            res1.confirm();      // Admin/System confirms it
-            bookedSuite.setAvailable(false); // Room becomes physically occupied
+            res1.confirm();      
+            bookedSuite.setAvailable(false); 
 
 
             Room bookedPenthouse = getRoomByNumber(401);

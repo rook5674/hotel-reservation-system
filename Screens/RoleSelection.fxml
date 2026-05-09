@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.RoleSelectionController"
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="CSE241 HOTEL TERMINAL" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="SELECT ACCESS TYPE" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <padding>
+                <Insets top="28" right="28" bottom="28" left="28"/>
+            </padding>
+
+            <VBox spacing="22" alignment="CENTER" maxWidth="760" styleClass="retro-card">
+                <Label text="WHO IS USING THE SYSTEM?" styleClass="retro-screen-title"/>
+                <Label text="Choose the correct role before entering credentials."
+                       styleClass="retro-muted"
+                       wrapText="true"/>
+
+                <TilePane alignment="CENTER" hgap="18" vgap="18" prefColumns="2" maxWidth="Infinity">
+                    <VBox spacing="12" alignment="CENTER" styleClass="retro-terminal" prefWidth="320" prefHeight="220">
+
+                        <Button text="ENTER AS GUEST"
+                                onAction="#handleGuest"
+                                styleClass="primary-button"
+                                maxWidth="Infinity"/>
+                    </VBox>
+
+                    <VBox spacing="12" alignment="CENTER" styleClass="retro-terminal" prefWidth="320" prefHeight="220">
+
+                        <Button text="ENTER AS STAFF"
+                                onAction="#handleStaff"
+                                styleClass="secondary-button"
+                                maxWidth="Infinity"/>
+                    </VBox>
+                </TilePane>
+
+
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

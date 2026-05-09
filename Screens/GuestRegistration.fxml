@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.GuestRegistrationController"
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="NEW GUEST FILE" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="REGISTRATION DESK" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <content>
+                <VBox spacing="18" fillWidth="true" styleClass="retro-shell">
+                    <VBox spacing="10" styleClass="retro-card" maxWidth="Infinity">
+                        <Label text="CREATE GUEST ACCOUNT" styleClass="retro-screen-title"/>
+                        <Label text="Complete the guest card below. Fields stretch with the window." styleClass="retro-muted" wrapText="true"/>
+                        <GridPane maxWidth="Infinity" styleClass="form-grid">
+
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="34"/>
+                        <ColumnConstraints percentWidth="66" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                            <Label text="USERNAME" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="usernameField" promptText="unique username" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="PASSWORD" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <PasswordField fx:id="passwordField" promptText="minimum 6 characters" GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="DATE OF BIRTH" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                            <DatePicker fx:id="dobPicker" GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="ADDRESS" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                            <TextField fx:id="addressField" promptText="home address" GridPane.rowIndex="3" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="GENDER" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                            <ComboBox fx:id="genderComboBox" promptText="select gender" GridPane.rowIndex="4" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="PREFERRED ROOM TYPE" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                            <ComboBox fx:id="roomTypeComboBox" promptText="select room type" GridPane.rowIndex="5" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="PREFERRED FLOOR" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                            <TextField fx:id="preferredFloorField" promptText="e.g. 2" GridPane.rowIndex="6" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="SEA VIEW" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                            <CheckBox fx:id="seaViewCheckBox" text="Requested" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+                            <Label text="MAX PRICE / NIGHT" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+                            <TextField fx:id="maxPriceField" promptText="e.g. 500" GridPane.rowIndex="8" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                            <Label text="INITIAL BALANCE" GridPane.rowIndex="9" GridPane.columnIndex="0"/>
+                            <TextField fx:id="balanceField" promptText="e.g. 1000" GridPane.rowIndex="9" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                        </GridPane>
+                        <Label fx:id="statusLabel" text="" styleClass="retro-status" wrapText="true"/>
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>
+                            <Button text="CREATE ACCOUNT" onAction="#handleRegister" styleClass="primary-button"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

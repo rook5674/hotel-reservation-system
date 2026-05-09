@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.ReceptionistGlobalOverviewController"
+            prefWidth="1150" prefHeight="720"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="RECEPTIONIST GLOBAL OVERVIEW" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="GLOBAL HOTEL LEDGER" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="16" fillWidth="true" styleClass="retro-shell">
+            <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="retro-card">
+                <Label text="HOTEL-WIDE OVERVIEW" styleClass="retro-screen-title" HBox.hgrow="ALWAYS"/>
+                <Button text="REFRESH" onAction="#refresh" styleClass="primary-button"/>
+                <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>
+            </HBox>
+            <TabPane VBox.vgrow="ALWAYS" maxWidth="Infinity" maxHeight="Infinity">
+                <tabs>
+                    <Tab text="GUESTS" closable="false">
+                        <content>
+                            <TableView fx:id="guestsTable" maxWidth="Infinity" maxHeight="Infinity">
+                                <columns>
+                                    <TableColumn fx:id="guestUsernameCol" text="USERNAME" prefWidth="240"/>
+                                    <TableColumn fx:id="guestDobCol" text="DATE OF BIRTH" prefWidth="200"/>
+                                </columns>
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                </columnResizePolicy>
+                            </TableView>
+                        </content>
+                    </Tab>
+                    <Tab text="ROOMS" closable="false">
+                        <content>
+                            <TableView fx:id="roomsTable" maxWidth="Infinity" maxHeight="Infinity">
+                                <columns>
+                                    <TableColumn fx:id="roomNumberCol" text="ROOM" prefWidth="120"/>
+                                    <TableColumn fx:id="roomTypeCol" text="TYPE" prefWidth="260"/>
+                                    <TableColumn fx:id="roomAvailableCol" text="AVAILABLE" prefWidth="140"/>
+                                </columns>
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                </columnResizePolicy>
+                            </TableView>
+                        </content>
+                    </Tab>
+                    <Tab text="RESERVATIONS" closable="false">
+                        <content>
+                            <TableView fx:id="reservationsTable" maxWidth="Infinity" maxHeight="Infinity">
+                                <columns>
+                                    <TableColumn fx:id="reservationIdCol" text="ID" prefWidth="90"/>
+                                    <TableColumn fx:id="reservationGuestCol" text="GUEST" prefWidth="220"/>
+                                    <TableColumn fx:id="reservationRoomCol" text="ROOM" prefWidth="140"/>
+                                    <TableColumn fx:id="reservationStatusCol" text="STATUS" prefWidth="160"/>
+                                </columns>
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                </columnResizePolicy>
+                            </TableView>
+                        </content>
+                    </Tab>
+                </tabs>
+            </TabPane>
+        </VBox>
+    </center>
+</BorderPane>

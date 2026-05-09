@@ -109,14 +109,22 @@ public class Admin extends Staff implements interfaces.Manageable<Room> {
         throw new Exception("Error: Original username not found.");
     }
 
-    public boolean findForgottenUsernameByDOB(java.time.LocalDate dateOfBirth) {
-        for (Guest g : Database.getAllGuests()) {
-            if (g.getDateOfBirth().equals(dateOfBirth)) return true;
+public java.util.ArrayList<String> findForgottenUsernamesByDOB(java.time.LocalDate dateOfBirth) {
+    java.util.ArrayList<String> usernames = new java.util.ArrayList<>();
+
+    for (Guest g : Database.getAllGuests()) {
+        if (g.getDateOfBirth().equals(dateOfBirth)) {
+            usernames.add(g.getUserName());
         }
-        for (Staff s : Database.getAllStaff()) {
-            if (s.getDateOfBirth().equals(dateOfBirth)) return true;
-        }
-        return false;
     }
+
+    for (Staff s : Database.getAllStaff()) {
+        if (s.getDateOfBirth().equals(dateOfBirth)) {
+            usernames.add(s.getUserName());
+        }
+    }
+
+    return usernames;
+}
 
 }

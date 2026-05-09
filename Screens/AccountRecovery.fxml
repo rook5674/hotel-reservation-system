@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.AccountRecoveryController"
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="ACCOUNT RECOVERY" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="DOB LOOKUP" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <padding><Insets top="26" right="26" bottom="26" left="26"/></padding>
+            <VBox maxWidth="560" spacing="18" alignment="CENTER" styleClass="retro-card">
+                <Label text="FIND FORGOTTEN USERNAME" styleClass="retro-screen-title"/>
+                <Label text="Enter the date of birth stored in the hotel ledger." styleClass="retro-muted" wrapText="true"/>
+                <GridPane maxWidth="Infinity" styleClass="form-grid">
+
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="34"/>
+                        <ColumnConstraints percentWidth="66" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="DATE OF BIRTH" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <DatePicker fx:id="dobPicker" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                </GridPane>
+                <Label fx:id="resultLabel" text="" styleClass="retro-status" wrapText="true"/>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="RECOVER" onAction="#handleRecover" styleClass="primary-button"/>
+                    <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
