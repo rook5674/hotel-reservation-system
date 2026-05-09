@@ -53,7 +53,6 @@ public class Main {
             System.out.println("Admin successfully deleted temporary test data.");
 
             // Account Recovery Tests
-            System.out.println("Forgotten Username Lookup (DOB 1999-01-15): " + admin.findForgottenUsernameByDOB(LocalDate.of(1999, 1, 15)));
             admin.resetUserPassword("mohamed_ali", "newpassword123");
             System.out.println("Admin forced password reset for mohamed_ali.");
 

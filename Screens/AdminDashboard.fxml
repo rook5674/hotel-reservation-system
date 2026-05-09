@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.AdminDashboardController"
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="ADMIN CONSOLE" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="MASTER LEDGER" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <content>
+                <VBox spacing="20" alignment="CENTER" fillWidth="true" styleClass="retro-shell">
+                    <VBox spacing="8" alignment="CENTER" styleClass="retro-card" maxWidth="Infinity">
+                        <Label text="ADMIN OPERATIONS BOARD" styleClass="retro-screen-title"/>
+                        <Label text="Rooms, room types, amenities, users, and hotel-wide records." styleClass="retro-muted" wrapText="true"/>
+                    </VBox>
+                    <TilePane alignment="CENTER" hgap="14" vgap="14" prefColumns="3" maxWidth="Infinity">
+                        <Button text="SCHEDULE VIEW" onAction="#goToSchedule" styleClass="primary-button dashboard-tile"/>
+                        <Button text="ROOM MANAGEMENT" onAction="#goToRooms" styleClass="primary-button dashboard-tile"/>
+                        <Button text="ROOM TYPE MANAGEMENT" onAction="#goToRoomTypes" styleClass="primary-button dashboard-tile"/>
+                        <Button text="AMENITY MANAGEMENT" onAction="#goToAmenities" styleClass="primary-button dashboard-tile"/>
+                        <Button text="USER CREDENTIALS" onAction="#goToUsers" styleClass="secondary-button dashboard-tile"/>
+                        <Button text="GLOBAL OVERVIEW" onAction="#goToOverview" styleClass="secondary-button dashboard-tile"/>
+                        <Button text="LOGOUT" onAction="#handleLogout" styleClass="danger-button dashboard-tile"/>
+                    </TilePane>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

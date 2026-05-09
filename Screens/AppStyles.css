@@ -1,0 +1,247 @@
+/* Retro Hotel Reservation System Theme
+   Palette from provided screenshot:
+   Sand #E2C393, Olive #807659, Navy #0B2448,
+   Burgundy #6E0A0A, Cream #DCDAB9, Dark #282A30
+*/
+
+.root {
+    -fx-font-family: "Consolas", "Courier New", "Segoe UI", monospace;
+    -fx-background-color: #282A30;
+    -fx-font-size: 13px;
+}
+
+.retro-root {
+    -fx-background-color: linear-gradient(to bottom, #282A30, #0B2448);
+}
+
+.retro-topbar {
+    -fx-background-color: #0B2448;
+    -fx-border-color: #E2C393;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 14 20;
+    -fx-spacing: 12;
+    -fx-alignment: center-left;
+}
+
+.retro-brand {
+    -fx-text-fill: #E2C393;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.retro-code {
+    -fx-text-fill: #DCDAB9;
+    -fx-font-size: 12px;
+}
+
+.retro-screen-title {
+    -fx-text-fill: #0B2448;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.retro-section-title {
+    -fx-text-fill: #6E0A0A;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+.retro-muted {
+    -fx-text-fill: #807659;
+}
+
+.retro-shell {
+    -fx-padding: 22;
+    -fx-spacing: 18;
+    -fx-fill-width: true;
+}
+
+.retro-card {
+    -fx-background-color: #DCDAB9;
+    -fx-background-radius: 0;
+    -fx-border-color: #0B2448;
+    -fx-border-width: 2;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.35), 0, 0, 6, 6);
+}
+
+.retro-panel {
+    -fx-background-color: #E2C393;
+    -fx-background-radius: 0;
+    -fx-border-color: #807659;
+    -fx-border-width: 2;
+    -fx-padding: 18;
+}
+
+.retro-terminal {
+    -fx-background-color: #282A30;
+    -fx-border-color: #E2C393;
+    -fx-border-width: 2;
+    -fx-padding: 16;
+}
+
+.retro-terminal-label {
+    -fx-text-fill: #DCDAB9;
+}
+
+.retro-status {
+    -fx-text-fill: #6E0A0A;
+    -fx-font-weight: bold;
+}
+
+.retro-success {
+    -fx-text-fill: #0B2448;
+    -fx-font-weight: bold;
+}
+
+.tool-row {
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+}
+
+.form-grid {
+    -fx-hgap: 14;
+    -fx-vgap: 12;
+}
+
+.label {
+    -fx-text-fill: #0B2448;
+}
+
+.text-field,
+.password-field,
+.combo-box,
+.date-picker {
+    -fx-background-color: #F7F0CF;
+    -fx-border-color: #807659;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-text-fill: #282A30;
+    -fx-prompt-text-fill: #807659;
+    -fx-max-width: Infinity;
+}
+
+.check-box {
+    -fx-text-fill: #0B2448;
+}
+
+.primary-button,
+.secondary-button,
+.danger-button {
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-border-width: 2;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 9 16;
+    -fx-max-width: Infinity;
+}
+
+.primary-button {
+    -fx-background-color: #0B2448;
+    -fx-text-fill: #E2C393;
+    -fx-border-color: #E2C393;
+}
+
+.primary-button:hover {
+    -fx-background-color: #123B73;
+}
+
+.secondary-button {
+    -fx-background-color: #807659;
+    -fx-text-fill: white;
+    -fx-border-color: #0B2448;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #958A69;
+}
+
+.danger-button {
+    -fx-background-color: #6E0A0A;
+    -fx-text-fill: #E2C393;
+    -fx-border-color: #E2C393;
+}
+
+.danger-button:hover {
+    -fx-background-color: #8B1111;
+}
+
+.table-view {
+    -fx-background-color: #DCDAB9;
+    -fx-border-color: #0B2448;
+    -fx-border-width: 2;
+    -fx-table-cell-border-color: #807659;
+    -fx-max-width: Infinity;
+    -fx-max-height: Infinity;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #0B2448;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: #0B2448;
+    -fx-border-color: #E2C393;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #E2C393;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: #F7F0CF;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #E2C393;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #6E0A0A;
+}
+
+.table-row-cell:selected .text {
+    -fx-fill: #E2C393;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #282A30;
+}
+
+.tab {
+    -fx-background-color: #807659;
+    -fx-background-radius: 0;
+    -fx-border-color: #E2C393;
+}
+
+.tab:selected {
+    -fx-background-color: #DCDAB9;
+}
+
+.tab .tab-label {
+    -fx-text-fill: #0B2448;
+    -fx-font-weight: bold;
+}
+
+.scroll-pane,
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.separator .line {
+    -fx-border-color: #807659;
+    -fx-border-width: 1;
+}
+
+.dashboard-tile {
+    -fx-pref-width: 260;
+    -fx-pref-height: 78;
+    -fx-max-width: Infinity;
+}
+.scaled-viewport {
+    -fx-background-color: #282A30;
+}

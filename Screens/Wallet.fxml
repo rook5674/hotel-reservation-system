@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.WalletController"
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="WALLET COUNTER" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="BALANCE REGISTER" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <padding><Insets top="26" right="26" bottom="26" left="26"/></padding>
+            <VBox maxWidth="560" spacing="18" alignment="CENTER" styleClass="retro-card">
+                <Label text="GUEST BALANCE" styleClass="retro-screen-title"/>
+                <VBox spacing="8" styleClass="retro-terminal" maxWidth="Infinity">
+                    <Label text="CURRENT LEDGER BALANCE" styleClass="retro-terminal-label"/>
+                    <Label fx:id="balanceLabel" text="$0.00" styleClass="retro-terminal-label"/>
+                </VBox>
+                <GridPane maxWidth="Infinity" styleClass="form-grid">
+
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="34"/>
+                        <ColumnConstraints percentWidth="66" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="NEW BALANCE" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="newBalanceField" promptText="e.g. 1500" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                </GridPane>
+                <Label fx:id="statusLabel" text="" styleClass="retro-status" wrapText="true"/>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="UPDATE BALANCE" onAction="#handleUpdateBalance" styleClass="primary-button"/>
+                    <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

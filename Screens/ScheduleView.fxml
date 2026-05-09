@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.ScheduleViewController"
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="SCHEDULE VIEW" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="STAFF HOURS" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <padding><Insets top="26" right="26" bottom="26" left="26"/></padding>
+            <VBox maxWidth="620" spacing="18" alignment="CENTER" styleClass="retro-card">
+                <Label text="WORKING HOURS CARD" styleClass="retro-screen-title"/>
+                <VBox spacing="8" styleClass="retro-terminal" maxWidth="Infinity">
+                    <Label fx:id="roleLabel" text="Role:" styleClass="retro-terminal-label"/>
+                    <Label fx:id="scheduleLabel" text="Working Hours:" styleClass="retro-terminal-label"/>
+                </VBox>
+                <Button text="BACK" onAction="#handleBack" styleClass="secondary-button"/>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>

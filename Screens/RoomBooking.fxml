@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Screens.RoomBookingController"
+            prefWidth="1000" prefHeight="650"
+            styleClass="retro-root">
+
+    <top>
+        <HBox styleClass="retro-topbar">
+            <Label text="ROOM BOOKING" styleClass="retro-brand"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="RESERVATION PUNCH CARD" styleClass="retro-code"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane>
+            <padding><Insets top="26" right="26" bottom="26" left="26"/></padding>
+            <VBox maxWidth="640" spacing="18" alignment="CENTER" styleClass="retro-card">
+                <Label text="MAKE RESERVATION" styleClass="retro-screen-title"/>
+                <GridPane maxWidth="Infinity" styleClass="form-grid">
+
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="34"/>
+                        <ColumnConstraints percentWidth="66" hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="ROOM" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="roomComboBox" promptText="select available room" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                    <Label text="CHECK-IN" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <DatePicker fx:id="checkInPicker" GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                    <Label text="CHECK-OUT" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <DatePicker fx:id="checkOutPicker" GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                </GridPane>
+                <VBox spacing="8" styleClass="retro-terminal" maxWidth="Infinity">
+                    <Label fx:id="nightsLabel" text="Nights: -" styleClass="retro-terminal-label"/>
+                    <Label fx:id="totalLabel" text="Estimated Total: -" styleClass="retro-terminal-label"/>
+                </VBox>
+                <Label fx:id="statusLabel" text="" styleClass="retro-status" wrapText="true"/>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="BACK TO ROOMS" onAction="#handleBack" styleClass="secondary-button"/>
+                    <Button text="CONFIRM BOOKING" onAction="#handleConfirm" styleClass="primary-button"/>
+                </HBox>
+            </VBox>
+        </StackPane>
+    </center>
+</BorderPane>
