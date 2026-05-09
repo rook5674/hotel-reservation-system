@@ -1,0 +1,5 @@
+package enumerations;
+public enum AmenityType {
+    WIFI, TV, MINI_BAR, AIR_CONDITIONING, HAIR_DRYER, BALCONY, BREAKFAST_INCLUDED
+}
+
