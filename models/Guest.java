@@ -150,9 +150,10 @@ public class Guest extends User implements interfaces.Reservable {
             return false;
         }
 
-        Invoice invoice = Database.createAndAddInvoice(reservation);
+        Invoice invoice = new Invoice(reservation);
         invoice.pay(methods);
         balance -= cost;
+        Database.addInvoice(invoice);
         return true;
     }
 }

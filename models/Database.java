@@ -246,6 +246,7 @@ public class Database {
     public static ArrayList<Reservation> getAllReservations() { return reservations; }
     public static ArrayList<RoomType> getAllRoomTypes() { return roomTypes; }
     public static ArrayList<Amenity> getAllAmenities() { return amenities; }
+    public static ArrayList<Invoice> getAllInvoices() { return invoices; }
     public static ArrayList<Staff> getAllStaff() { return staff; }
 
     public static synchronized void initializeDummyData() {

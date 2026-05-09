@@ -75,6 +75,7 @@ public class RoomManagementController {
     @FXML
     private void handleUpdateAvailability() {
         try {
+             refreshRooms();
             Room selected = roomsTable.getSelectionModel().getSelectedItem();
 
 
@@ -94,6 +95,7 @@ public class RoomManagementController {
                 refreshRooms();
                 reselectRoom(roomNumber);
                 statusLabel.setText("Room " + roomNumber + " availability updated to " + (newAvailability ? "Available" : "Unavailable") + ".");
+                 refreshRooms();
             } else {
                 statusLabel.setText("Room not found.");
             }
